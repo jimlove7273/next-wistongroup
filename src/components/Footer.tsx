@@ -24,25 +24,45 @@ export default function Footer() {
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors"
               >
-                <i className="ri-facebook-fill text-xl"></i>
+                <img
+                  src="/social/facebook.png"
+                  alt="Facebook"
+                  width="40"
+                  height="40"
+                />
               </a>
               <a
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors"
               >
-                <i className="ri-twitter-fill text-xl"></i>
+                <img
+                  src="/social/twitter.png"
+                  alt="Twitter"
+                  width="40"
+                  height="40"
+                />
               </a>
               <a
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors"
               >
-                <i className="ri-instagram-line text-xl"></i>
+                <img
+                  src="/social/instagram.png"
+                  alt="Instagram"
+                  width="40"
+                  height="40"
+                />
               </a>
               <a
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors"
               >
-                <i className="ri-youtube-fill text-xl"></i>
+                <img
+                  src="/social/youtube.png"
+                  alt="YouTube"
+                  width="40"
+                  height="40"
+                />
               </a>
             </div>
           </div>
@@ -121,10 +141,15 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-3 py-2 bg-gray-800 text-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-1/2 *:px-3 py-2 bg-gray-800 text-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button className="px-4 py-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 transition-colors">
-                <i className="ri-mail-send-line"></i>
+                <img
+                  src="/envelope.png"
+                  alt="Send Email"
+                  width="30"
+                  height="30"
+                />
               </button>
             </div>
           </div>

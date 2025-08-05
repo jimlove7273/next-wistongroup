@@ -8,16 +8,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
-  const mainCategories = [
-    { name: "CPUs & Processors", href: "/category/cpus" },
-    { name: "Graphics Cards", href: "/category/graphics-cards" },
-    { name: "Memory & Storage", href: "/category/memory-storage" },
-    { name: "Motherboards", href: "/category/motherboards" },
-    { name: "Monitors", href: "/category/monitors" },
-    { name: "Peripherals", href: "/category/peripherals" },
-    { name: "Components", href: "/category/components" },
-    { name: "Gaming", href: "/category/gaming" },
-  ];
+  const mainCategories = [{ name: "RMA", href: "/rma", color: "orange" }];
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-20">
@@ -39,67 +30,66 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Search for computer parts..."
-                className="w-full px-4 py-2 pl-10 pr-4 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 lg:w-full px-4 py-2 pr-4 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i className="ri-search-line text-gray-400"></i>
+                <span className="material-symbols-outlined !text-[#aaaaaa]">
+                  search
+                </span>
               </div>
             </div>
           </div>
 
           {/* Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/deals"
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Deals
-            </Link>
-            <Link
-              href="/about"
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              About Us
-            </Link>
-            <Link
-              href="/contact"
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Contact Us
-            </Link>
-          </nav>
+          <div className="flex gap-4 items-center">
+            <nav className="hidden md:flex items-center space-x-4">
+              <Link
+                href="/about"
+                className="text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                About Us
+              </Link>
+              <Link
+                href="/contact"
+                className="text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                Contact Us
+              </Link>
+            </nav>
 
-          {/* Cart and Menu */}
-          <div className="flex items-center space-x-4">
-            <Link href="/cart" className="relative">
-              <div className="w-8 h-8 flex items-center justify-center text-gray-700 hover:text-blue-600 transition-colors cursor-pointer">
-                <span className="material-symbols-outlined">shopping_cart</span>
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartCount}
+            {/* Cart and Menu */}
+            <div className="flex items-center justify-end space-x-4">
+              <Link href="/cart" className="relative">
+                <div className="w-8 h-8 flex items-center justify-center text-gray-700 hover:text-blue-600 transition-colors cursor-pointer">
+                  <span className="material-symbols-outlined">
+                    shopping_cart
                   </span>
-                )}
-              </div>
-            </Link>
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden w-8 h-8 flex items-center justify-center"
-            >
-              <i
-                className={`ri-${isMenuOpen ? "close" : "menu"}-line text-xl`}
-              ></i>
-            </button>
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+              </Link>
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="md:hidden w-8 h-8 flex items-center justify-center"
+              >
+                <span className="material-symbols-outlined">menu</span>
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Category Navigation */}
-        <div className="border-t border-gray-200">
-          <nav className="flex space-x-8 overflow-x-auto py-3">
+        <div className="border-t border-gray-200 flex justify-end">
+          <nav className="flex space-x-8 overflow-x-auto py-1">
             {mainCategories.map((category) => (
               <Link
                 key={category.name}
                 href={category.href}
-                className="text-sm text-gray-600 hover:text-blue-600 transition-colors whitespace-nowrap"
+                className={`px-6 py-1 rounded-sm text-sm text-white font-semibold transition-colors whitespace-nowrap
+                    bg-${category.color}-600 hover:bg-${category.color}-700`}
               >
                 {category.name}
               </Link>

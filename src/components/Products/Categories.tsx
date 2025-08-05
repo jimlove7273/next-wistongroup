@@ -37,7 +37,7 @@ const ProductCategories = () => {
   };
 
   return (
-    <aside className="w-[256px] border-r border-gray-100 p-4">
+    <aside className="hidden bg-slate-100 md:block w-[256px] border-r border-gray-100 p-4">
       <p className="font-semibold mb-4">Product Categories</p>
       <ul className="space-y-2">
         {categories.map((category) => (

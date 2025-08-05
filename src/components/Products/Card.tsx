@@ -107,7 +107,9 @@ const ProductCard = ({ product }: Props) => {
             </div>
           ) : (
             <div className="flex items-center justify-center">
-              <i className="ri-shopping-cart-line mr-2"></i>
+              <span className="material-symbols-outlined mr-2">
+                shopping_cart
+              </span>
               Add to Cart
             </div>
           )}

@@ -5,11 +5,10 @@ const HomeHero = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Build Your Dream PC
+            Better Power, Better Warranty Policy
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            Discover thousands of high-quality computer parts from top brands.
-            From processors to peripherals, we have everything you need.
+            All v2 series Power Supply are more powerful and efficient
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap">

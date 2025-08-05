@@ -21,5 +21,5 @@ export type productType = {
   image: string;
   category: string;
   inStock: boolean;
-  badge: string;
+  badge?: string;
 };
