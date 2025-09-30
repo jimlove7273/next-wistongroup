@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { productType } from '@/types/products';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 
 type Props = {
   product: productType;
@@ -24,6 +25,7 @@ const ProductCard = ({ product, imageIndex = 0 }: Props) => {
   } = product;
   const [isAdding, setIsAdding] = useState(false);
   const { addToCart } = useCart();
+  const { isLoggedIn } = useAuth();
 
   console.log("id", id);
 
@@ -88,14 +90,20 @@ const ProductCard = ({ product, imageIndex = 0 }: Props) => {
         </div>
 
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-2">
-            <span className="text-lg font-bold text-gray-900">${price}</span>
-            {originalPrice && (
-              <span className="text-sm text-gray-500 line-through">
-                ${originalPrice}
-              </span>
-            )}
-          </div>
+          {isLoggedIn ? (
+            <div className="flex items-center space-x-2">
+              <span className="text-lg font-bold text-gray-900">${price}</span>
+              {originalPrice && (
+                <span className="text-sm text-gray-500 line-through">
+                  ${originalPrice}
+                </span>
+              )}
+            </div>
+          ) : (
+            <div className="text-sm text-blue-600 font-medium">
+              Please Login to See Price
+            </div>
+          )}
           <span
             className={`text-xs px-2 py-1 rounded-full ${
               inStock

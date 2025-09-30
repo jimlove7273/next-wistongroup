@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ProductCategories from "@/components/Products/Categories";
 import { useState } from "react";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function SiteLayout({
   children,
@@ -13,15 +14,16 @@ export default function SiteLayout({
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    // <div className="min-h-screen w-full flex flex-col border-3 border-red-500">
-    <div className="min-h-screen w-full">
-      <Header />
-      <div className="flex flex-1">
-        {isSidebarOpen && <ProductCategories />}
+    <AuthProvider>
+      <div className="min-h-screen w-full">
+        <Header />
+        <div className="flex flex-1">
+          {isSidebarOpen && <ProductCategories />}
 
-        <main className="flex-1">{children}</main>
+          <main className="flex-1">{children}</main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </AuthProvider>
   );
 }

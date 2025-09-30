@@ -4,6 +4,7 @@ import 'material-symbols';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import CartDrawer from '@/components/CartDrawer';
 
 export default function Header() {
@@ -11,13 +12,17 @@ export default function Header() {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [loginError, setLoginError] = useState('');
   const loginRef = useRef<HTMLDivElement>(null);
   const categoriesRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const { getTotalItems } = useCart();
+  const { user, isLoggedIn, login, logout } = useAuth();
 
   const mainCategories = [{ name: 'RMA', href: '/rma', color: 'orange' }];
 
@@ -135,13 +140,31 @@ export default function Header() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you would handle the login logic here
-    console.log('Login attempt with:', { email, password });
-    // Close the login dialog after submission
+    setLoginError('');
+    
+    const success = login(email, password);
+    
+    if (success) {
+      setIsLoginOpen(false);
+      setEmail('');
+      setPassword('');
+    } else {
+      setLoginError('Invalid email or password');
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
     setIsLoginOpen(false);
-    // Reset form fields
-    setEmail('');
-    setPassword('');
+  };
+
+  const handleForgotPassword = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Implement password reset logic
+    alert(`Password reset link sent to ${forgotEmail}`);
+    setForgotEmail('');
+    setIsForgotPassword(false);
+    setIsLoginOpen(false);
   };
 
   const toggleCategory = (name: string) => {
@@ -216,96 +239,180 @@ export default function Header() {
                 <div className="relative" ref={loginRef}>
                   <button
                     onClick={() => setIsLoginOpen(!isLoginOpen)}
-                    className="text-gray-700 hover:text-blue-600 transition-colors"
+                    className={`relative flex items-center justify-center transition-colors ${
+                      isLoggedIn
+                        ? 'text-blue-600 hover:text-blue-700'
+                        : 'text-gray-700 hover:text-blue-600'
+                    }`}
                   >
-                    <span className="material-symbols-outlined">person</span>
+                    <span className="material-symbols-outlined flex items-center">
+                      {isLoggedIn ? 'account_circle' : 'person'}
+                    </span>
+                    {isLoggedIn && (
+                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                    )}
                   </button>
 
                   {/* Login Dropdown */}
                   {isLoginOpen && (
                     <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-                      <div className="p-6">
-                        <h3 className="text-lg font-medium text-gray-900 mb-4">
-                          Sign in to your account
-                        </h3>
-                        <form onSubmit={handleLogin}>
-                          <div className="mb-4">
-                            <label
-                              htmlFor="email"
-                              className="block text-sm font-medium text-gray-700 mb-1"
-                            >
-                              Email address
-                            </label>
-                            <input
-                              id="email"
-                              type="email"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              required
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                              placeholder="you@example.com"
-                            />
-                          </div>
-                          <div className="mb-4">
-                            <label
-                              htmlFor="password"
-                              className="block text-sm font-medium text-gray-700 mb-1"
-                            >
-                              Password
-                            </label>
-                            <input
-                              id="password"
-                              type="password"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                              required
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                              placeholder="••••••••"
-                            />
-                          </div>
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center">
-                              <input
-                                id="remember-me"
-                                name="remember-me"
-                                type="checkbox"
-                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                              />
-                              <label
-                                htmlFor="remember-me"
-                                className="ml-2 block text-sm text-gray-700"
-                              >
-                                Remember me
-                              </label>
+                      {isLoggedIn ? (
+                        /* Logged In View */
+                        <div className="p-6">
+                          <div className="flex items-center mb-4">
+                            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                              <span className="material-symbols-outlined text-blue-600">
+                                person
+                              </span>
                             </div>
-                            <div className="text-sm">
-                              <a
-                                href="#"
-                                className="font-medium text-blue-600 hover:text-blue-500"
-                              >
-                                Forgot password?
-                              </a>
+                            <div className="ml-3">
+                              <p className="text-sm font-medium text-gray-900">
+                                {user?.name}
+                              </p>
+                              <p className="text-xs text-gray-500">{user?.email}</p>
                             </div>
                           </div>
-                          <button
-                            type="submit"
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                          >
-                            Sign in
-                          </button>
-                        </form>
-                        <div className="mt-4 text-sm text-gray-600">
-                          <p>
-                            Don&apos;t have an account?{' '}
-                            <a
-                              href="#"
-                              className="font-medium text-blue-600 hover:text-blue-500"
+                          <div className="border-t border-gray-200 pt-4">
+                            <button
+                              onClick={handleLogout}
+                              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
-                              Sign up
-                            </a>
-                          </p>
+                              Sign out
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      ) : isForgotPassword ? (
+                        /* Forgot Password View */
+                        <div className="p-6">
+                          <button
+                            onClick={() => setIsForgotPassword(false)}
+                            className="mb-4 text-sm text-gray-600 hover:text-gray-900 flex items-center"
+                          >
+                            <span className="material-symbols-outlined text-sm mr-1">
+                              arrow_back
+                            </span>
+                            Back to login
+                          </button>
+                          <h3 className="text-lg font-medium text-gray-900 mb-2">
+                            Reset Password
+                          </h3>
+                          <p className="text-sm text-gray-600 mb-4">
+                            Enter your email address and we&apos;ll send you a link to
+                            reset your password.
+                          </p>
+                          <form onSubmit={handleForgotPassword}>
+                            <div className="mb-4">
+                              <label
+                                htmlFor="forgot-email"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                Email address
+                              </label>
+                              <input
+                                id="forgot-email"
+                                type="email"
+                                value={forgotEmail}
+                                onChange={(e) => setForgotEmail(e.target.value)}
+                                required
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="you@example.com"
+                              />
+                            </div>
+                            <button
+                              type="submit"
+                              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            >
+                              Send Reset Link
+                            </button>
+                          </form>
+                        </div>
+                      ) : (
+                        /* Login View */
+                        <div className="p-6">
+                          <h3 className="text-lg font-medium text-gray-900 mb-4">
+                            Sign in to your account
+                          </h3>
+                          {loginError && (
+                            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                              <p className="text-sm text-red-600">{loginError}</p>
+                            </div>
+                          )}
+                          <form onSubmit={handleLogin}>
+                            <div className="mb-4">
+                              <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                Email address
+                              </label>
+                              <input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="you@example.com"
+                              />
+                            </div>
+                            <div className="mb-4">
+                              <label
+                                htmlFor="password"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                              >
+                                Password
+                              </label>
+                              <input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="••••••••"
+                              />
+                            </div>
+                            <div className="flex items-center justify-between mb-4">
+                              <div className="flex items-center">
+                                <input
+                                  id="remember-me"
+                                  name="remember-me"
+                                  type="checkbox"
+                                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                />
+                                <label
+                                  htmlFor="remember-me"
+                                  className="ml-2 block text-sm text-gray-700"
+                                >
+                                  Remember me
+                                </label>
+                              </div>
+                              <div className="text-sm">
+                                <button
+                                  type="button"
+                                  onClick={() => setIsForgotPassword(true)}
+                                  className="font-medium text-blue-600 hover:text-blue-500"
+                                >
+                                  Forgot password?
+                                </button>
+                              </div>
+                            </div>
+                            <button
+                              type="submit"
+                              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            >
+                              Sign in
+                            </button>
+                          </form>
+                          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                            <p className="text-xs text-blue-800">
+                              <strong>Demo Account:</strong><br />
+                              Email: demo@wistongroup.com<br />
+                              Password: demo123
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

@@ -2,12 +2,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 
 const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const { addToCart } = useCart();
+  const { isLoggedIn } = useAuth();
 
   const products = {
     '1': {
@@ -172,22 +174,31 @@ const ProductDetail = () => {
                     </span>
                   </div>
 
-                  <div className="flex items-center space-x-4 mb-6">
-                    <span className="text-3xl font-bold text-gray-900">
-                      ${product.price}
-                    </span>
-                    {product.originalPrice && (
-                      <>
-                        <span className="text-xl text-gray-500 line-through">
-                          ${product.originalPrice}
-                        </span>
-                        <span className="bg-green-100 text-green-800 text-sm px-2 py-1 rounded-full">
-                          {/*Save {discountPercentage}%*/}
-                          Save 0%
-                        </span>
-                      </>
-                    )}
-                  </div>
+                  {isLoggedIn ? (
+                    <div className="flex items-center space-x-4 mb-6">
+                      <span className="text-3xl font-bold text-gray-900">
+                        ${product.price}
+                      </span>
+                      {product.originalPrice && (
+                        <>
+                          <span className="text-xl text-gray-500 line-through">
+                            ${product.originalPrice}
+                          </span>
+                          <span className="bg-green-100 text-green-800 text-sm px-2 py-1 rounded-full">
+                            Save {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="mb-6">
+                      <div className="inline-block bg-blue-50 border border-blue-200 rounded-lg px-6 py-4">
+                        <p className="text-lg font-semibold text-blue-600">
+                          Please Login to See Price
+                        </p>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex items-center mb-6">
                     <span
