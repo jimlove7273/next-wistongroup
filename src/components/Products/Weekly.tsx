@@ -7,12 +7,9 @@ const WeeklyProducts = () => {
         Weekly Products
       </div>
       <div className="pb-6 w-full xl:w-2/3 mx-auto my-10 grid gri-col-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        <ProductList />
-        <ProductList />
-        <ProductList />
-        <ProductList />
-        <ProductList />
-        <ProductList />
+        {Array.from({ length: 6 }).map((_, index) => (
+          <ProductList key={index} index={index + 3} />
+        ))}
       </div>
     </>
   );

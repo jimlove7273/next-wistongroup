@@ -4,7 +4,6 @@ export type productListType = {
   price: number;
   originalPrice: number;
   rating: number;
-  reviewCount: number;
   image: string;
   category: string;
   inStock: boolean;
@@ -17,7 +16,6 @@ export type productType = {
   price: number;
   originalPrice: number;
   rating: number;
-  reviewCount: number;
   image: string;
   category: string;
   inStock: boolean;

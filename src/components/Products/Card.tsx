@@ -7,16 +7,16 @@ import { useCart } from '@/context/CartContext';
 
 type Props = {
   product: productType;
+  imageIndex?: number;
 };
 
-const ProductCard = ({ product }: Props) => {
+const ProductCard = ({ product, imageIndex = 0 }: Props) => {
   const {
     id,
     name,
     price,
     originalPrice,
     rating,
-    reviewCount,
     image,
     category,
     inStock,
@@ -24,6 +24,8 @@ const ProductCard = ({ product }: Props) => {
   } = product;
   const [isAdding, setIsAdding] = useState(false);
   const { addToCart } = useCart();
+
+  console.log("id", id);
 
   const discountPercentage = originalPrice
     ? Math.round(((originalPrice - price) / originalPrice) * 100)
@@ -43,11 +45,12 @@ const ProductCard = ({ product }: Props) => {
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group">
       <div className="relative">
         <Link href={`/product/${id}`}>
-          <img
+        <img src={`https://picsum.photos/600/400?random=${imageIndex}`} alt="Product Image" className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer" />
+          {/* <img
             src={image}
             alt={name}
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
-          />
+          /> */}
         </Link>
 
         {badge && (
@@ -82,7 +85,6 @@ const ProductCard = ({ product }: Props) => {
               ></i>
             ))}
           </div>
-          <span className="text-xs text-gray-500 ml-2">({reviewCount})</span>
         </div>
 
         <div className="flex items-center justify-between mb-3">

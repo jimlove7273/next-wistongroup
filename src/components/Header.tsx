@@ -360,7 +360,7 @@ export default function Header() {
         {isMenuOpen && (
           <div
             ref={menuRef}
-            className="md:hidden bg-white border-t border-gray-200"
+            className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-30"
           >
             <div className="px-4 py-2 space-y-1">
               {/* Main Categories */}
