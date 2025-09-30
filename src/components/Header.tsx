@@ -24,7 +24,7 @@ export default function Header() {
   const { getTotalItems } = useCart();
   const { user, isLoggedIn, login, logout } = useAuth();
 
-  const mainCategories = [{ name: 'RMA', href: '/rma', color: 'orange' }];
+  const mainCategories = [{ name: 'RMA', href: '/rma', color: 'green' }];
 
   const productCategories = [
     {
@@ -447,12 +447,12 @@ export default function Header() {
 
           {/* Category Navigation - Desktop */}
           <div className="border-t border-gray-200 flex justify-end hidden md:block">
-            <nav className="flex space-x-8 overflow-x-auto py-1">
+            <nav className="flex justify-end space-x-8 overflow-x-auto">
               {mainCategories.map((category) => (
                 <Link
                   key={category.name}
                   href={category.href}
-                  className={`px-6 py-1 rounded-sm text-sm text-white font-semibold transition-colors whitespace-nowrap ${
+                  className={`px-6 py-2 rounded-sm text-sm text-white font-semibold transition-colors whitespace-nowrap ${
                     colorMap[category.color]
                   }`}
                 >

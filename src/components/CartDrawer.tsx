@@ -72,7 +72,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         }`}
       >
         <div className="flex h-full flex-col bg-white shadow-xl">
-          <div className="flex items-center justify-between border-b p-4">
+          <div className="flex items-center justify-between border-b border-dotted border-[#cccccc] p-4">
             <h2 className="text-lg font-medium text-gray-900">Shopping Cart</h2>
             <button
               onClick={onClose}
