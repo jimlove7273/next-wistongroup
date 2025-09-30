@@ -1,0 +1,18 @@
+import ProductList from "@/components/Products/List";
+
+const FeaturedProducts = () => {
+  return (
+    <>
+      <div className="text-2xl font-semibold mt-10 text-center">
+        Featured Products
+      </div>
+      <div className="pb-6 w-full xl:w-2/3 mx-auto my-10 grid gri-col-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <ProductList />
+        <ProductList />
+        <ProductList />
+      </div>
+    </>
+  );
+};
+
+export default FeaturedProducts;

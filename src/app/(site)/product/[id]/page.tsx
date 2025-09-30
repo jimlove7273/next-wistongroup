@@ -1,56 +1,72 @@
-"use client";
-import { useState } from "react";
-import Link from "next/link";
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
 
 const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const { addToCart } = useCart();
+
   const products = {
-    "1": {
-      id: "1",
-      name: "AMD Ryzen 9 7950X 16-Core Processor",
+    '1': {
+      id: '1',
+      name: 'AMD Ryzen 9 7950X 16-Core Processor',
       price: 599,
       originalPrice: 699,
       rating: 4.8,
       reviewCount: 1247,
-      category: "CPUs & Processors",
-      brand: "AMD",
+      category: 'CPUs & Processors',
+      brand: 'AMD',
       inStock: true,
-      badge: "Best Seller",
+      badge: 'Best Seller',
+      image:
+        'https://readdy.ai/api/search-image?query=AMD%20Ryzen%209%207950X%20processor%20on%20clean%20white%20background%2C%20modern%20CPU%20chip%20with%20silver%20heat%20spreader%2C%20professional%20product%20photography%2C%20high-end%20computer%20component%2C%20detailed%20view%20of%20pins%20and%20branding%2C%20minimalist%20tech%20aesthetic%2C%20studio%20lighting&width=600&height=600&seq=prodcpu1-1&orientation=squarish',
       images: [
-        "https://readdy.ai/api/search-image?query=AMD%20Ryzen%209%207950X%20processor%20on%20clean%20white%20background%2C%20modern%20CPU%20chip%20with%20silver%20heat%20spreader%2C%20professional%20product%20photography%2C%20high-end%20computer%20component%2C%20detailed%20view%20of%20pins%20and%20branding%2C%20minimalist%20tech%20aesthetic%2C%20studio%20lighting&width=600&height=600&seq=prodcpu1-1&orientation=squarish",
-        "https://readdy.ai/api/search-image?query=AMD%20Ryzen%209%207950X%20processor%20side%20view%20on%20clean%20white%20background%2C%20modern%20CPU%20chip%20showing%20thickness%20and%20heat%20spreader%20detail%2C%20professional%20product%20photography%2C%20high-end%20computer%20component%2C%20detailed%20side%20profile%2C%20minimalist%20tech%20aesthetic%2C%20studio%20lighting&width=600&height=600&seq=prodcpu1-2&orientation=squarish",
-        "https://readdy.ai/api/search-image?query=AMD%20Ryzen%209%207950X%20processor%20bottom%20view%20on%20clean%20white%20background%2C%20modern%20CPU%20chip%20showing%20pins%20and%20contacts%2C%20professional%20product%20photography%2C%20high-end%20computer%20component%2C%20detailed%20pin%20view%2C%20minimalist%20tech%20aesthetic%2C%20studio%20lighting&width=600&height=600&seq=prodcpu1-3&orientation=squarish",
+        'https://readdy.ai/api/search-image?query=AMD%20Ryzen%209%207950X%20processor%20on%20clean%20white%20background%2C%20modern%20CPU%20chip%20with%20silver%20heat%20spreader%2C%20professional%20product%20photography%2C%20high-end%20computer%20component%2C%20detailed%20view%20of%20pins%20and%20branding%2C%20minimalist%20tech%20aesthetic%2C%20studio%20lighting&width=600&height=600&seq=prodcpu1-1&orientation=squarish',
+        'https://readdy.ai/api/search-image?query=AMD%20Ryzen%209%207950X%20processor%20side%20view%20on%20clean%20white%20background%2C%20modern%20CPU%20chip%20showing%20thickness%20and%20heat%20spreader%20detail%2C%20professional%20product%20photography%2C%20high-end%20computer%20component%2C%20detailed%20side%20profile%2C%20minimalist%20tech%20aesthetic%2C%20studio%20lighting&width=600&height=600&seq=prodcpu1-2&orientation=squarish',
+        'https://readdy.ai/api/search-image?query=AMD%20Ryzen%209%207950X%20processor%20bottom%20view%20on%20clean%20white%20background%2C%20modern%20CPU%20chip%20showing%20pins%20and%20contacts%2C%20professional%20product%20photography%2C%20high-end%20computer%20component%2C%20detailed%20pin%20view%2C%20minimalist%20tech%20aesthetic%2C%20studio%20lighting&width=600&height=600&seq=prodcpu1-3&orientation=squarish',
       ],
       description:
-        "The AMD Ryzen 9 7950X is a high-performance 16-core, 32-thread processor built on the advanced Zen 4 architecture. Perfect for content creation, gaming, and professional workloads.",
+        'The AMD Ryzen 9 7950X is a high-performance 16-core, 32-thread processor built on the advanced Zen 4 architecture. Perfect for content creation, gaming, and professional workloads.',
       specifications: {
-        Cores: "16",
-        Threads: "32",
-        "Base Clock": "4.5 GHz",
-        "Boost Clock": "5.7 GHz",
-        Cache: "80MB",
-        Socket: "AM5",
-        "Manufacturing Process": "5nm",
-        TDP: "170W",
-        "Memory Support": "DDR5-5200",
-        "PCIe Support": "PCIe 5.0",
+        Cores: '16',
+        Threads: '32',
+        'Base Clock': '4.5 GHz',
+        'Boost Clock': '5.7 GHz',
+        Cache: '80MB',
+        Socket: 'AM5',
+        'Manufacturing Process': '5nm',
+        TDP: '170W',
+        'Memory Support': 'DDR5-5200',
+        'PCIe Support': 'PCIe 5.0',
       },
       features: [
-        "Zen 4 Architecture",
-        "16 Cores, 32 Threads",
-        "Up to 5.7 GHz Max Boost",
-        "PCIe 5.0 Support",
-        "DDR5 Memory Support",
-        "AMD Precision Boost 2",
-        "AMD Curve Optimizer",
-        "Unlocked for Overclocking",
+        'Zen 4 Architecture',
+        '16 Cores, 32 Threads',
+        'Up to 5.7 GHz Max Boost',
+        'PCIe 5.0 Support',
+        'DDR5 Memory Support',
+        'AMD Precision Boost 2',
+        'AMD Curve Optimizer',
+        'Unlocked for Overclocking',
       ],
     },
   };
 
   const product = products[1];
+
+  const handleAddToCart = () => {
+    setIsAddingToCart(true);
+    // In a real app, you might want to show a toast notification here
+    addToCart(product, quantity);
+
+    // Simulate API call delay
+    setTimeout(() => {
+      setIsAddingToCart(false);
+    }, 500);
+  };
 
   return (
     <div className="bg-gray-50">
@@ -76,7 +92,9 @@ const ProductDetail = () => {
                       chevron_right
                     </span>
                     <Link
-                      href={`/category/${product.category.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
+                      href={`/category/${product.category
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]/g, '-')}`}
                       className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2"
                     >
                       {product.category}
@@ -114,8 +132,8 @@ const ProductDetail = () => {
                         onClick={() => setSelectedImage(index)}
                         className={`w-20 h-20 rounded-lg border-2 overflow-hidden ${
                           selectedImage === index
-                            ? "border-blue-500"
-                            : "border-gray-200"
+                            ? 'border-blue-500'
+                            : 'border-gray-200'
                         }`}
                       >
                         <img
@@ -143,7 +161,9 @@ const ProductDetail = () => {
                       {[...Array(5)].map((_, i) => (
                         <i
                           key={i}
-                          className={`ri-star-${i < Math.floor(product.rating) ? "fill" : "line"} text-yellow-400 text-lg`}
+                          className={`ri-star-${
+                            i < Math.floor(product.rating) ? 'fill' : 'line'
+                          } text-yellow-400 text-lg`}
                         ></i>
                       ))}
                     </div>
@@ -173,14 +193,16 @@ const ProductDetail = () => {
                     <span
                       className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                         product.inStock
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
                       }`}
                     >
                       <i
-                        className={`ri-${product.inStock ? "check" : "close"}-circle-line mr-1`}
+                        className={`ri-${
+                          product.inStock ? 'check' : 'close'
+                        }-circle-line mr-1`}
                       ></i>
-                      {product.inStock ? "In Stock" : "Out of Stock"}
+                      {product.inStock ? 'In Stock' : 'Out of Stock'}
                     </span>
                     {product.badge && (
                       <span className="ml-3 bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded-full">
@@ -219,12 +241,12 @@ const ProductDetail = () => {
                       </div>
                     </div>
                     <button
-                      // onClick={handleAddToCart}
+                      onClick={handleAddToCart}
                       disabled={!product.inStock || isAddingToCart}
                       className={`flex-1 py-3 px-6 rounded-lg font-medium transition-colors whitespace-nowrap ${
                         product.inStock
-                          ? "bg-blue-600 text-white hover:bg-blue-700"
-                          : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          ? 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                       }`}
                     >
                       {isAddingToCart ? (

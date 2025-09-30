@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { productType } from "@/types/products";
-import Link from "next/link";
+import { useState } from 'react';
+import { productType } from '@/types/products';
+import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
 
 type Props = {
   product: productType;
@@ -22,10 +23,21 @@ const ProductCard = ({ product }: Props) => {
     badge,
   } = product;
   const [isAdding, setIsAdding] = useState(false);
+  const { addToCart } = useCart();
 
   const discountPercentage = originalPrice
     ? Math.round(((originalPrice - price) / originalPrice) * 100)
     : 0;
+
+  const handleAddToCart = () => {
+    setIsAdding(true);
+    addToCart(product);
+
+    // Simulate API call delay
+    setTimeout(() => {
+      setIsAdding(false);
+    }, 500);
+  };
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group">
@@ -64,7 +76,9 @@ const ProductCard = ({ product }: Props) => {
             {[...Array(5)].map((_, i) => (
               <i
                 key={i}
-                className={`ri-star-${i < Math.floor(rating) ? "fill" : "line"} text-yellow-400 text-sm`}
+                className={`ri-star-${
+                  i < Math.floor(rating) ? 'fill' : 'line'
+                } text-yellow-400 text-sm`}
               ></i>
             ))}
           </div>
@@ -83,21 +97,21 @@ const ProductCard = ({ product }: Props) => {
           <span
             className={`text-xs px-2 py-1 rounded-full ${
               inStock
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
+                ? 'bg-green-100 text-green-800'
+                : 'bg-red-100 text-red-800'
             }`}
           >
-            {inStock ? "In Stock" : "Out of Stock"}
+            {inStock ? 'In Stock' : 'Out of Stock'}
           </span>
         </div>
 
         <button
-          // onClick={handleAddToCart}
+          onClick={handleAddToCart}
           disabled={!inStock || isAdding}
           className={`w-full py-2 px-4 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
             inStock
-              ? "bg-blue-600 text-white hover:bg-blue-700"
-              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              ? 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >
           {isAdding ? (
@@ -107,7 +121,7 @@ const ProductCard = ({ product }: Props) => {
             </div>
           ) : (
             <div className="flex items-center justify-center">
-              <span className="material-symbols-outlined mr-2">
+              <span className="material-symbols-outlined mr-2 text-sm">
                 shopping_cart
               </span>
               Add to Cart

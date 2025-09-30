@@ -4,10 +4,18 @@ import "material-symbols";
 import ProductCard from "@/components/Products/Card";
 import { useState } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 const ProductCatgoryList = () => {
+  const params = useParams();
+  const category = params.category as string;
+  const categoryName = category
+    ? category
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+    : "Category";
   const [sortBy, setSortBy] = useState<string>("");
-  const [viewMode, setViewMode] = useState<string>("grid");
 
   const allProducts = [
     {
@@ -73,7 +81,7 @@ const ProductCatgoryList = () => {
                   keyboard_arrow_right
                 </span>
                 <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2">
-                  Category
+                  {categoryName}
                 </span>
               </div>
             </li>
@@ -82,62 +90,33 @@ const ProductCatgoryList = () => {
 
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Category</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{categoryName}</h1>
           <p className="text-gray-600">Showing {0} products</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Filters Sidebar */}
-          <div className="lg:col-span-1">Filter</div>
-
-          {/* Products Grid */}
-          <div className="lg:col-span-3">
-            {/* Toolbar */}
-            <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <label className="text-sm font-medium text-gray-700">
-                      Sort by:
-                    </label>
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
-                    >
-                      <option value="featured">Featured</option>
-                      <option value="price-low">Price: Low to High</option>
-                      <option value="price-high">Price: High to Low</option>
-                      <option value="rating">Customer Rating</option>
-                      <option value="name">Name</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => setViewMode("grid")}
-                    className={`p-2 rounded-md ${viewMode === "grid" ? "bg-blue-100 text-blue-600" : "text-gray-400 hover:text-gray-600"}`}
-                  >
-                    <span className="material-symbols-outlined">grid_view</span>
-                  </button>
-                  <button
-                    onClick={() => setViewMode("list")}
-                    className={`p-2 rounded-md ${viewMode === "list" ? "bg-blue-100 text-blue-600" : "text-gray-400 hover:text-gray-600"}`}
-                  >
-                    <span className="material-symbols-outlined">list_alt</span>
-                  </button>
-                </div>
-              </div>
+        {/* Products Grid */}
+        <div>
+          {/* Toolbar */}
+          <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+            <div className="flex items-center space-x-2">
+              <label className="text-sm font-medium text-gray-700">
+                Sort by:
+              </label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">Name</option>
+              </select>
             </div>
+          </div>
 
-            {/* Products */}
-            <div
-              className={
-                viewMode === "grid"
-                  ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
-                  : "space-y-4"
-              }
-            >
+          {/* Products */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {allProducts.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -147,15 +126,14 @@ const ProductCatgoryList = () => {
               ))}
             </div>
 
-            {/* Pagination */}
-            {/*{totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            )}*/}
-          </div>
+          {/* Pagination */}
+          {/*{totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}*/}
         </div>
       </div>
     </div>

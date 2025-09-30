@@ -1,33 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-
-const categories = [
-  {
-    name: "Closeout Deals",
-    subcategories: ["Hardware", "Software"],
-  },
-  {
-    name: "Prudent Way",
-    subcategories: [
-      "AC/DC Universal Power Adapter",
-      "USB/HDMI/VGA Adapter",
-      "Switching Power Supply",
-    ],
-  },
-  {
-    name: "Office Essentials",
-    subcategories: ["Stationery", "Furniture", "Storage Solutions"],
-  },
-  {
-    name: "Networking",
-    subcategories: ["Routers", "Cables", "Switches"],
-  },
-  {
-    name: "Peripherals",
-    subcategories: ["Keyboards", "Mice", "Monitors"],
-  },
-];
+import { useState } from 'react';
+import Link from 'next/link';
+import { productCategories as categories } from '@/app/data/categories';
 
 const ProductCategories = () => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -41,7 +16,7 @@ const ProductCategories = () => {
       <p className="font-semibold mb-4">Product Categories</p>
       <ul className="space-y-2">
         {categories.map((category) => (
-          <li key={category.name} className="border-b border-gray-100 pb-2">
+          <li key={category.name} className="border-b border-gray-200">
             <button
               onClick={() => toggleCategory(category.name)}
               className="p-2 rounde-lg flex justify-between items-center w-full text-left hover:bg-gray-50"
@@ -50,18 +25,20 @@ const ProductCategories = () => {
                 {category.name}
               </span>
               <span className="material-symbols-outlined text-sm text-[#cadcde]">
-                {openCategory === category.name ? "expand_less" : "expand_more"}
+                {openCategory === category.name ? 'expand_less' : 'expand_more'}
               </span>
             </button>
 
             {openCategory === category.name && (
               <ul className="ml-4 mt-2 space-y-1 text-sm text-gray-700">
                 {category.subcategories.map((sub) => (
-                  <li
-                    key={sub}
-                    className="px-2 py-1 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
-                  >
-                    {sub}
+                  <li key={sub.slug}>
+                    <Link
+                      href={`/products/${sub.slug}`}
+                      className="block px-2 py-1 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded"
+                    >
+                      {sub.name}
+                    </Link>
                   </li>
                 ))}
               </ul>

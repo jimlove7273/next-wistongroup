@@ -3,3 +3,35 @@
 * {
     box-sizing: border-box;
 }
+
+/* For horizontal scrollbars */
+::-webkit-scrollbar {
+    height: 12px; /* give some space for the effect */
+}
+
+/*
+Custom Scrollbar with:
+- white (#fff) line as track
+- custom color as the thumb
+*/
+::-webkit-scrollbar-track {
+    background: transparent; /* make track see-through */
+    background-image: linear-gradient(
+        to bottom,
+        transparent 45%,
+        white 45%,
+        /* the thin line color */ white 55%,
+        transparent 55%
+    );
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #38589c;
+    border-radius: 6px;
+    border: 2px solid transparent; /* creates spacing so line stays visible */
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #4b78db;
+}
