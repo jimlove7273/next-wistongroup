@@ -1,0 +1,114 @@
+"use client"
+
+import { ShoppingCart } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { useAuth } from "@/components/auth-provider"
+import { useCart } from "@/components/cart-provider"
+import type { Product } from "@/lib/products"
+
+export default function ProductDetailContent({ product }: { product: Product }) {
+  const { user } = useAuth()
+  const { addItem } = useCart()
+
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      sku: product.sku,
+    })
+  }
+
+  return (
+    <div className="flex flex-col">
+      <div className="mb-4">
+        <Badge variant="secondary" className="mb-2">
+          {product.brand}
+        </Badge>
+        <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+        <p className="text-sm text-muted-foreground">SKU: {product.sku}</p>
+      </div>
+
+      <div className="mb-6">
+        <p className="text-foreground leading-relaxed">{product.description}</p>
+      </div>
+
+      <Card className="mb-6">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-medium text-muted-foreground">Price:</span>
+            {user ? (
+              <span className="text-3xl font-bold text-primary">${product.price.toFixed(2)}</span>
+            ) : (
+              <span className="text-sm text-muted-foreground italic">Please Login to See Price</span>
+            )}
+          </div>
+
+          <Button onClick={handleAddToCart} className="w-full" size="lg" disabled={!user}>
+            <ShoppingCart className="h-5 w-5 mr-2" />
+            Add to Cart
+          </Button>
+
+          {!user && (
+            <p className="text-xs text-center text-muted-foreground mt-4">
+              <Link href="/login" className="text-primary hover:underline">
+                Login
+              </Link>{" "}
+              to see pricing and add items to cart
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
+      {product.specifications && Object.keys(product.specifications).length > 0 && (
+        <Card className="mb-6">
+          <CardContent className="p-6">
+            <h2 className="font-semibold text-lg mb-4">Specifications</h2>
+            <div className="space-y-3">
+              {Object.entries(product.specifications).map(([key, value]) => (
+                <div key={key} className="flex justify-between py-2 border-b last:border-b-0">
+                  <span className="text-muted-foreground font-medium">{key}:</span>
+                  <span className="font-semibold">{value}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="space-y-2 text-sm">
+        <div className="flex justify-between py-2 border-b">
+          <span className="text-muted-foreground">Category:</span>
+          <Link
+            href={`/products?category=${encodeURIComponent(product.category)}`}
+            className="font-medium hover:text-primary"
+          >
+            {product.category}
+          </Link>
+        </div>
+        <div className="flex justify-between py-2 border-b">
+          <span className="text-muted-foreground">Subcategory:</span>
+          <Link
+            href={`/products?category=${encodeURIComponent(product.category)}&subcategory=${encodeURIComponent(product.subcategory)}`}
+            className="font-medium hover:text-primary"
+          >
+            {product.subcategory}
+          </Link>
+        </div>
+        <div className="flex justify-between py-2">
+          <span className="text-muted-foreground">Brand:</span>
+          <Link
+            href={`/products?brand=${encodeURIComponent(product.brand)}`}
+            className="font-medium hover:text-primary"
+          >
+            {product.brand}
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}

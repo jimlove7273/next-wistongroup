@@ -1,0 +1,3 @@
+- [x] Update app/layout.tsx to import and use Inter font instead of Geist
+- [x] Remove Geist dependency from package.json
+- [x] Run package manager install to update lockfile
