@@ -1,44 +1,47 @@
-"use client"
+"use client";
 
-import { Suspense } from "react"
-import { useSearchParams } from "next/navigation"
-import { LayoutWithSidebar } from "@/components/layout-with-sidebar"
-import { ProductCard } from "@/components/product-card"
-import { products } from "@/lib/products"
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { LayoutWithSidebar } from "@/components/layout-with-sidebar";
+import { ProductCard } from "@/components/product-card";
+import { products } from "@/lib/products";
 
 function ProductListContent() {
-  const searchParams = useSearchParams()
-  const category = searchParams.get("category")
-  const subcategory = searchParams.get("subcategory")
-  const brand = searchParams.get("brand")
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category");
+  const subcategory = searchParams.get("subcategory");
+  const brand = searchParams.get("brand");
 
-  let filteredProducts = products
+  let filteredProducts = products;
 
   if (category) {
-    filteredProducts = filteredProducts.filter((p) => p.category === category)
+    filteredProducts = filteredProducts.filter((p) => p.category === category);
   }
 
   if (subcategory) {
-    filteredProducts = filteredProducts.filter((p) => p.subcategory === subcategory)
+    filteredProducts = filteredProducts.filter(
+      (p) => p.subcategory === subcategory,
+    );
   }
 
   if (brand) {
-    filteredProducts = filteredProducts.filter((p) => p.brand === brand)
+    filteredProducts = filteredProducts.filter((p) => p.brand === brand);
   }
 
   const getTitle = () => {
-    if (brand) return `${brand} Products`
-    if (subcategory) return subcategory
-    if (category) return category
-    return "All Products"
-  }
+    if (brand) return `${brand} Products`;
+    if (subcategory) return subcategory;
+    if (category) return category;
+    return "All Products";
+  };
 
   return (
     <div className="container px-4 py-8 lg:px-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">{getTitle()}</h1>
         <p className="text-muted-foreground">
-          {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"} found
+          {filteredProducts.length}{" "}
+          {filteredProducts.length === 1 ? "product" : "products"} found
         </p>
       </div>
 
@@ -50,11 +53,13 @@ function ProductListContent() {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-muted-foreground text-lg">No products found in this category.</p>
+          <p className="text-muted-foreground text-lg">
+            No products found in this category.
+          </p>
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export default function ProductsPage() {
@@ -78,5 +83,5 @@ export default function ProductsPage() {
         <ProductListContent />
       </Suspense>
     </LayoutWithSidebar>
-  )
+  );
 }
