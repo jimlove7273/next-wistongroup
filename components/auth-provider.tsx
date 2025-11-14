@@ -1,44 +1,64 @@
-"use client"
+'use client';
 
-import { createContext, useContext, useState, type ReactNode } from "react"
+import { createContext, useContext, useState, type ReactNode } from 'react';
 
-interface User {
-  id: string
-  email: string
-  name: string
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  companyName?: string;
+  contact?: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  zipcode?: string;
+  phone?: string;
+  fax?: string;
 }
 
 interface AuthContextType {
-  user: User | null
-  login: (email: string, password: string) => Promise<void>
-  logout: () => void
+  user: User | null;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
+  updateProfile: (userData: Partial<User>) => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(null);
 
   const login = async (email: string, password: string) => {
     // Simulate login - in production, this would call your auth API
     setUser({
-      id: "1",
+      id: '1',
       email,
-      name: email.split("@")[0],
-    })
-  }
+      name: email.split('@')[0],
+    });
+  };
 
   const logout = () => {
-    setUser(null)
-  }
+    setUser(null);
+  };
 
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>
+  const updateProfile = (userData: Partial<User>) => {
+    if (user) {
+      setUser({ ...user, ...userData });
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, updateProfile }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    throw new Error('useAuth must be used within an AuthProvider');
   }
-  return context
+  return context;
 }

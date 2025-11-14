@@ -1,7 +1,8 @@
 import type React from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/header';
+import { Header } from '@/components/site/header';
+import { Footer } from '@/components/site/footer';
 import { CartProvider } from '@/components/cart-provider';
 import { AuthProvider } from '@/components/auth-provider';
 
@@ -29,6 +30,7 @@ export default function RootLayout({
           <CartProvider>
             <Header />
             {children}
+            <Footer />
           </CartProvider>
         </AuthProvider>
       </body>
