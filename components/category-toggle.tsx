@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface CategoryToggleProps {
-  onClick: () => void
+  onClick: () => void;
 }
 
 export function CategoryToggle({ onClick }: CategoryToggleProps) {
@@ -12,11 +12,11 @@ export function CategoryToggle({ onClick }: CategoryToggleProps) {
     <Button
       variant="outline"
       size="sm"
-      className="lg:hidden fixed bottom-4 left-4 z-30 shadow-lg bg-transparent"
+      className="lg:hidden fixed bottom-4 left-4 z-30 shadow-lg bg-white text-gray-900 hover:bg-gray-100"
       onClick={onClick}
     >
       <Menu className="h-4 w-4 mr-2" />
       Categories
     </Button>
-  )
+  );
 }

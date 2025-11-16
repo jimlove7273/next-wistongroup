@@ -1,23 +1,23 @@
-import { LayoutWithSidebar } from "@/components/layout-with-sidebar"
-import { ProductCard } from "@/components/product-card"
-import { BrandShowcase } from "@/components/brand-showcase"
-import { products } from "@/lib/products"
+import { LayoutWithSidebar } from '@/components/layout-with-sidebar';
+import { ProductCard } from '@/components/product-card';
+import { BrandShowcase } from '@/components/brand-showcase';
+import { products } from '@/lib/products';
 
 export default function HomePage() {
-  const featuredProducts = products.filter((p) => p.featured)
-  const weeklySpecials = products.filter((p) => p.weeklySpecial)
+  const featuredProducts = products.filter((p) => p.featured);
+  const weeklySpecials = products.filter((p) => p.weeklySpecial);
 
   return (
     <LayoutWithSidebar>
-      <div className="container px-4 py-8 lg:px-8">
+      <div className="mx-auto container px-4 py-8 lg:px-8">
         {/* Hero Section */}
-        <section className="mb-12 rounded-lg bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 p-8 md:p-12">
+        <section className="mb-12 rounded-lg bg-linear-to-r from-primary/10 via-accent/10 to-primary/10 p-8 md:p-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">
             Your Trusted Source for Computer Components
           </h1>
           <p className="text-lg text-muted-foreground mb-6 text-pretty max-w-2xl">
-            Discover premium hardware, cutting-edge technology, and unbeatable deals on the components you need to build
-            or upgrade your system.
+            Discover premium hardware, cutting-edge technology, and unbeatable
+            deals on the components you need to build or upgrade your system.
           </p>
         </section>
 
@@ -47,10 +47,15 @@ export default function HomePage() {
 
         {/* Brand Showcase */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">Shop by Brand</h2>
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold tracking-wide uppercase text-slate-500">
+              Shop by Brand
+            </h2>
+            <div className="h-1 w-16 bg-blue-600 mt-2 rounded-full"></div>
+          </div>
           <BrandShowcase />
         </section>
       </div>
     </LayoutWithSidebar>
-  )
+  );
 }

@@ -1,8 +1,8 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-8">
+    <footer className="bg-gray-800 text-white py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* First column - twice as wide */}
@@ -60,18 +60,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/login"
+                  href="/newsignup"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/register"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Register
+                  Open An Account
                 </Link>
               </li>
             </ul>
@@ -80,7 +72,8 @@ export function Footer() {
         {/* Copyright notice at the bottom */}
         <div className="mt-8 pt-4 border-t border-gray-700 text-center">
           <p className="text-gray-400 text-sm">
-            © 2007–{new Date().getFullYear()} Wiston Group. All rights reserved.
+            © 2007–{new Date().getFullYear()} Wiston Group. All rights
+            reserved.
           </p>
         </div>
       </div>

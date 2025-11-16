@@ -1,25 +1,33 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 import {
   ShoppingCart,
   User,
-  ChevronDown,
+  UserCircle,
   X,
   Trash2,
   Plus,
   Minus,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useCart } from '@/components/cart-provider';
-import { useAuth } from '@/components/auth-provider';
-import { useState, useRef, useEffect } from 'react';
+  LogIn,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useCart } from "@/components/cart-provider";
+import { useAuth } from "@/components/auth-provider";
+import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export function Header() {
+  const pathname = usePathname();
   const { items, removeItem, updateQuantity } = useCart();
-  const { user, logout } = useAuth();
+  const { user, logout, login } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
 
@@ -28,6 +36,24 @@ export function Header() {
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
+
+  console.log("user", user);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    try {
+      await login(email, password);
+      setEmail("");
+      setPassword("");
+      setIsDropdownOpen(false);
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Login failed. Please try again.");
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -42,9 +68,9 @@ export function Header() {
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -64,21 +90,37 @@ export function Header() {
                 <nav className="hidden md:flex items-center gap-4">
                   <Link
                     href="/"
-                    className="text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100"
+                    className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
+                      pathname === "/" ? "text-primary bg-blue-100" : ""
+                    }`}
                   >
                     Home
                   </Link>
                   <Link
                     href="/about"
-                    className="text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100"
+                    className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
+                      pathname === "/about" ? "text-primary bg-blue-100" : ""
+                    }`}
                   >
                     About Us
                   </Link>
                   <Link
                     href="/contact"
-                    className="text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100"
+                    className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
+                      pathname === "/contact" ? "text-primary bg-blue-100" : ""
+                    }`}
                   >
                     Contact Us
+                  </Link>
+                  <Link
+                    href="/newsignup"
+                    className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
+                      pathname === "/newsignup"
+                        ? "text-primary bg-blue-100"
+                        : ""
+                    }`}
+                  >
+                    Open An Account
                   </Link>
                 </nav>
                 <div className="relative" ref={dropdownRef}>
@@ -88,11 +130,15 @@ export function Header() {
                     className="relative"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
-                    <User className="h-5 w-5" />
+                    {user ? (
+                      <UserCircle className="h-5 w-5 text-primary" />
+                    ) : (
+                      <User className="h-5 w-5" />
+                    )}
                     <span className="sr-only">User menu</span>
                   </Button>
                   {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-md shadow-lg z-50">
                       <div className="py-1">
                         {user ? (
                           <>
@@ -117,13 +163,55 @@ export function Header() {
                             </button>
                           </>
                         ) : (
-                          <Link
-                            href="/login"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => setIsDropdownOpen(false)}
-                          >
-                            Login
-                          </Link>
+                          <div className="p-4">
+                            <h3 className="text-sm font-semibold text-gray-900 mb-3">
+                              Login to Your Account
+                            </h3>
+                            <form onSubmit={handleLogin} className="space-y-3">
+                              <div className="space-y-1">
+                                <Label
+                                  htmlFor="dropdown-email"
+                                  className="text-xs"
+                                >
+                                  Email
+                                </Label>
+                                <Input
+                                  id="dropdown-email"
+                                  type="email"
+                                  placeholder="Enter your email"
+                                  value={email}
+                                  onChange={(e) => setEmail(e.target.value)}
+                                  required
+                                  className="h-9"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <Label
+                                  htmlFor="dropdown-password"
+                                  className="text-xs"
+                                >
+                                  Password
+                                </Label>
+                                <Input
+                                  id="dropdown-password"
+                                  type="password"
+                                  placeholder="Enter your password"
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                  required
+                                  className="h-9"
+                                />
+                              </div>
+                              <Button
+                                type="submit"
+                                className="w-full h-9"
+                                disabled={isLoggingIn}
+                              >
+                                <LogIn className="h-4 w-4" />
+                                {isLoggingIn ? "Logging in..." : "Login"}
+                              </Button>
+                            </form>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -152,14 +240,14 @@ export function Header() {
       {/* Cart Drawer */}
       <div
         className={`fixed inset-0 bg-black/30 z-50 transition-opacity duration-300 ${
-          isCartOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsCartOpen(false)}
       ></div>
       <div
         ref={cartRef}
         className={`fixed top-0 right-0 bg-white w-full max-w-md h-screen flex flex-col z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
-          isCartOpen ? 'translate-x-0' : 'translate-x-full'
+          isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between p-4 border-b">

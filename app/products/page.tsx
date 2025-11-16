@@ -1,16 +1,17 @@
-"use client";
+'use client';
 
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { LayoutWithSidebar } from "@/components/layout-with-sidebar";
-import { ProductCard } from "@/components/product-card";
-import { products } from "@/lib/products";
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { LayoutWithSidebar } from '@/components/layout-with-sidebar';
+import { ProductCard } from '@/components/product-card';
+import { products } from '@/lib/products';
+import { toProperCase } from '@/utils/general';
 
 function ProductListContent() {
   const searchParams = useSearchParams();
-  const category = searchParams.get("category");
-  const subcategory = searchParams.get("subcategory");
-  const brand = searchParams.get("brand");
+  const category = searchParams.get('category');
+  const subcategory = searchParams.get('subcategory');
+  const brand = searchParams.get('brand');
 
   let filteredProducts = products;
 
@@ -25,14 +26,16 @@ function ProductListContent() {
   }
 
   if (brand) {
-    filteredProducts = filteredProducts.filter((p) => p.brand === brand);
+    filteredProducts = filteredProducts.filter(
+      (p) => p.brand.toLowerCase() === brand.toLowerCase(),
+    );
   }
 
   const getTitle = () => {
-    if (brand) return `${brand} Products`;
+    if (brand) return `${toProperCase(brand)} Products`;
     if (subcategory) return subcategory;
     if (category) return category;
-    return "All Products";
+    return 'All Products';
   };
 
   return (
@@ -40,8 +43,8 @@ function ProductListContent() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">{getTitle()}</h1>
         <p className="text-muted-foreground">
-          {filteredProducts.length}{" "}
-          {filteredProducts.length === 1 ? "product" : "products"} found
+          {filteredProducts.length}{' '}
+          {filteredProducts.length === 1 ? 'product' : 'products'} found
         </p>
       </div>
 
