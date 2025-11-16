@@ -70,11 +70,25 @@ export function Footer() {
           </div>
         </div>
         {/* Copyright notice at the bottom */}
-        <div className="mt-8 pt-4 border-t border-gray-700 text-center">
+        <div className="mt-8 pt-4 border-t border-gray-700 flex justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2007–{new Date().getFullYear()} Wiston Group. All rights
+            © 2007–{new Date().getFullYear()} Wiston Group, Inc. All rights
             reserved.
           </p>
+          <div className="flex gap-4">
+            <Link
+              href="/privacy"
+              className="text-gray-400 hover:text-white text-sm transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms"
+              className="text-gray-400 hover:text-white text-sm transition-colors"
+            >
+              Terms of Use
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
