@@ -10,6 +10,7 @@ import {
   Plus,
   Minus,
   LogIn,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,10 +18,11 @@ import { Label } from "@/components/ui/label";
 import { useCart } from "@/components/cart-provider";
 import { useAuth } from "@/components/auth-provider";
 import { useState, useRef, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const { items, removeItem, updateQuantity } = useCart();
   const { user, logout, login } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -28,6 +30,7 @@ export function Header() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
 
@@ -36,8 +39,6 @@ export function Header() {
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
-
-  console.log("user", user);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,6 +53,15 @@ export function Header() {
       alert("Login failed. Please try again.");
     } finally {
       setIsLoggingIn(false);
+    }
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(
+        `/products/search?q=${encodeURIComponent(searchQuery.trim())}`,
+      );
     }
   };
 
@@ -78,160 +88,175 @@ export function Header() {
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="flex h-16 items-center px-4">
-          <div className="w-full flex items-center justify-between gap-4 px-10">
-            <div className="w-full flex items-center justify-between gap-6">
+          <div className="flex w-full items-center justify-between gap-4">
+            {/* Left: Brand */}
+            <div className="flex-1 flex justify-start">
               <Link href="/" className="flex items-center space-x-2">
                 <div className="text-2xl font-bold text-primary">
                   Wiston Group
                 </div>
               </Link>
+            </div>
 
-              <div className="flex items-center">
-                <nav className="hidden md:flex items-center gap-4">
-                  <Link
-                    href="/"
-                    className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                      pathname === "/" ? "text-primary bg-blue-100" : ""
-                    }`}
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/about"
-                    className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                      pathname === "/about" ? "text-primary bg-blue-100" : ""
-                    }`}
-                  >
-                    About Us
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                      pathname === "/contact" ? "text-primary bg-blue-100" : ""
-                    }`}
-                  >
-                    Contact Us
-                  </Link>
-                  <Link
-                    href="/newsignup"
-                    className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                      pathname === "/newsignup"
-                        ? "text-primary bg-blue-100"
-                        : ""
-                    }`}
-                  >
-                    Open An Account
-                  </Link>
-                </nav>
-                <div className="relative" ref={dropdownRef}>
+            {/* Center: Search */}
+            <div className="flex-none flex justify-center w-full max-w-md">
+              <form onSubmit={handleSearch} className="w-full">
+                <div className="relative">
+                  <Input
+                    type="search"
+                    placeholder="Search products..."
+                    className="w-full"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                   <Button
-                    variant="ghost"
+                    type="submit"
                     size="icon"
-                    className="relative"
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    variant="ghost"
+                    className="absolute right-0 top-0 h-full"
                   >
-                    {user ? (
-                      <UserCircle className="h-5 w-5 text-primary" />
-                    ) : (
-                      <User className="h-5 w-5" />
-                    )}
-                    <span className="sr-only">User menu</span>
+                    <Search className="h-4 w-4" />
                   </Button>
-                  {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                      <div className="py-1">
-                        {user ? (
-                          <>
-                            <div className="px-4 py-2 text-sm font-medium text-gray-900 border-b">
-                              {user.email}
-                            </div>
-                            <Link
-                              href="/profile"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              onClick={() => setIsDropdownOpen(false)}
-                            >
-                              Profile
-                            </Link>
-                            <button
-                              onClick={() => {
-                                logout();
-                                setIsDropdownOpen(false);
-                              }}
-                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            >
-                              Logout
-                            </button>
-                          </>
-                        ) : (
-                          <div className="p-4">
-                            <h3 className="text-sm font-semibold text-gray-900 mb-3">
-                              Login to Your Account
-                            </h3>
-                            <form onSubmit={handleLogin} className="space-y-3">
-                              <div className="space-y-1">
-                                <Label
-                                  htmlFor="dropdown-email"
-                                  className="text-xs"
-                                >
-                                  Email
-                                </Label>
-                                <Input
-                                  id="dropdown-email"
-                                  type="email"
-                                  placeholder="Enter your email"
-                                  value={email}
-                                  onChange={(e) => setEmail(e.target.value)}
-                                  required
-                                  className="h-9"
-                                />
-                              </div>
-                              <div className="space-y-1">
-                                <Label
-                                  htmlFor="dropdown-password"
-                                  className="text-xs"
-                                >
-                                  Password
-                                </Label>
-                                <Input
-                                  id="dropdown-password"
-                                  type="password"
-                                  placeholder="Enter your password"
-                                  value={password}
-                                  onChange={(e) => setPassword(e.target.value)}
-                                  required
-                                  className="h-9"
-                                />
-                              </div>
-                              <Button
-                                type="submit"
-                                className="w-full h-9"
-                                disabled={isLoggingIn}
-                              >
-                                <LogIn className="h-4 w-4" />
-                                {isLoggingIn ? "Logging in..." : "Login"}
-                              </Button>
-                            </form>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
                 </div>
+              </form>
+            </div>
 
+            {/* Right: Nav & Actions */}
+            <div className="flex-1 flex justify-end items-center gap-2">
+              <nav className="hidden md:flex items-center gap-2">
+                <Link
+                  href="/about"
+                  className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
+                    pathname === "/about" ? "text-primary bg-blue-100" : ""
+                  }`}
+                >
+                  About Us
+                </Link>
+                <Link
+                  href="/contact"
+                  className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
+                    pathname === "/contact" ? "text-primary bg-blue-100" : ""
+                  }`}
+                >
+                  Contact Us
+                </Link>
+                <Link
+                  href="/newsignup"
+                  className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
+                    pathname === "/newsignup" ? "text-primary bg-blue-100" : ""
+                  }`}
+                >
+                  Open An Account
+                </Link>
+              </nav>
+              <div className="relative" ref={dropdownRef}>
                 <Button
                   variant="ghost"
                   size="icon"
                   className="relative"
-                  onClick={() => setIsCartOpen(true)}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <ShoppingCart className="h-5 w-5" />
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-sky-200 text-sky-900 text-xs font-bold flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
+                  {user ? (
+                    <UserCircle className="h-5 w-5 text-primary" />
+                  ) : (
+                    <User className="h-5 w-5" />
                   )}
+                  <span className="sr-only">User menu</span>
                 </Button>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    <div className="py-1">
+                      {user ? (
+                        <>
+                          <div className="px-4 py-2 text-sm font-medium text-gray-900 border-b">
+                            {user.email}
+                          </div>
+                          <Link
+                            href="/profile"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            onClick={() => setIsDropdownOpen(false)}
+                          >
+                            Profile
+                          </Link>
+                          <button
+                            onClick={() => {
+                              logout();
+                              setIsDropdownOpen(false);
+                            }}
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            Logout
+                          </button>
+                        </>
+                      ) : (
+                        <div className="p-4">
+                          <h3 className="text-sm font-semibold text-gray-900 mb-3">
+                            Login to Your Account
+                          </h3>
+                          <form onSubmit={handleLogin} className="space-y-3">
+                            <div className="space-y-1">
+                              <Label
+                                htmlFor="dropdown-email"
+                                className="text-xs"
+                              >
+                                Email
+                              </Label>
+                              <Input
+                                id="dropdown-email"
+                                type="email"
+                                placeholder="Enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                className="h-9"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <Label
+                                htmlFor="dropdown-password"
+                                className="text-xs"
+                              >
+                                Password
+                              </Label>
+                              <Input
+                                id="dropdown-password"
+                                type="password"
+                                placeholder="Enter your password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                className="h-9"
+                              />
+                            </div>
+                            <Button
+                              type="submit"
+                              className="w-full h-9"
+                              disabled={isLoggingIn}
+                            >
+                              <LogIn className="h-4 w-4" />
+                              {isLoggingIn ? "Logging in..." : "Login"}
+                            </Button>
+                          </form>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative"
+                onClick={() => setIsCartOpen(true)}
+              >
+                <ShoppingCart className="h-5 w-5" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-sky-200 text-sky-900 text-xs font-bold flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Button>
             </div>
           </div>
         </div>
