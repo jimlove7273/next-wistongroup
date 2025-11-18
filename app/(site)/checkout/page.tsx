@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/components/auth-provider';
 import { useCart } from '@/components/cart-provider';
-import type { Customer } from '@/types/customer';
+import type { CustomerType } from '@/types/customer';
 
 export default function CheckoutPage() {
   const { user } = useAuth();
@@ -18,7 +18,7 @@ export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Customer form state - initialize with user profile data
-  const [customerData, setCustomerData] = useState<Omit<Customer, 'id'>>({
+  const [customerData, setCustomerData] = useState<Omit<CustomerType, 'id'>>({
     companyName: user?.companyName || '',
     contact: user?.contact || '',
     address1: user?.address1 || '',

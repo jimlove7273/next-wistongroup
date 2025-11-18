@@ -1,4 +1,4 @@
-export interface Customer {
+export type CustomerType = {
   id: number;
   companyName: string;
   contact: string;
@@ -10,5 +10,4 @@ export interface Customer {
   email: string;
   phone: string;
   fax: string;
-}
-
+};

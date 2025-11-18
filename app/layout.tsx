@@ -1,10 +1,9 @@
 import type React from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/site/header';
-import { Footer } from '@/components/site/footer';
 import { CartProvider } from '@/components/cart-provider';
 import { AuthProvider } from '@/components/auth-provider';
+import { ConditionalLayout } from '@/components/conditional-layout';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -28,9 +27,7 @@ export default function RootLayout({
       <body className="font-sans">
         <AuthProvider>
           <CartProvider>
-            <Header />
-            {children}
-            <Footer />
+            <ConditionalLayout>{children}</ConditionalLayout>
           </CartProvider>
         </AuthProvider>
       </body>
