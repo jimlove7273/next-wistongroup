@@ -91,29 +91,31 @@ export default function AdminLayout({
       onKeyDown={updateLastActivity}
     >
       {/* Sidebar Navigation */}
-      <div className="w-64 bg-white shadow-md">
-        <div className="p-4 border-b">
-          <h2 className="text-xl font-bold text-gray-800">Admin Panel</h2>
+      {user && (
+        <div className="w-64 bg-white shadow-md">
+          <div className="p-4 border-b">
+            <h2 className="text-xl font-bold text-gray-800">Admin Panel</h2>
+          </div>
+          <nav className="p-2">
+            <ul className="space-y-1">
+              {navItems.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className={`block px-4 py-2 rounded-md ${
+                      pathname === item.href
+                        ? 'bg-blue-100 text-blue-700 font-medium'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-        <nav className="p-2">
-          <ul className="space-y-1">
-            {navItems.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className={`block px-4 py-2 rounded-md ${
-                    pathname === item.href
-                      ? 'bg-blue-100 text-blue-700 font-medium'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
@@ -125,17 +127,19 @@ export default function AdminLayout({
             </h1>
             <div className="flex items-center space-x-4">
               {user && (
-                <span className="text-gray-600">Hello, {user.name}</span>
+                <>
+                  <span className="text-gray-600">Hello, {user.name}</span>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      logout();
+                      router.push('/admin/login');
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </>
               )}
-              <Button
-                variant="outline"
-                onClick={() => {
-                  logout();
-                  router.push('/admin/login');
-                }}
-              >
-                Logout
-              </Button>
             </div>
           </div>
         </header>

@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="h-full flex items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
@@ -83,10 +83,8 @@ export default function AdminLoginPage() {
               <div className="text-red-500 text-sm text-center">{error}</div>
             )}
           </CardContent>
-          <CardFooter className="flex flex-col">
-            <Button type="submit" className="w-full">
-              Sign In
-            </Button>
+          <CardFooter className="mt-8 flex flex-col">
+            <Button type="submit">Sign In</Button>
           </CardFooter>
         </form>
       </Card>
