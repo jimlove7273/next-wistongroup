@@ -73,10 +73,6 @@ export default function ProductsPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Product List</CardTitle>
-          <CardDescription>View and manage all products</CardDescription>
-        </CardHeader>
         <CardContent>
           <div className="mb-4">
             <Input

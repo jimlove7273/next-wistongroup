@@ -71,10 +71,6 @@ export default function RMAsPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>RMA List</CardTitle>
-          <CardDescription>View and manage all RMAs</CardDescription>
-        </CardHeader>
         <CardContent>
           <div className="mb-4">
             <Input

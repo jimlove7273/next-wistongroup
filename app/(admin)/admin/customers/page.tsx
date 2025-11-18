@@ -73,10 +73,6 @@ export default function CustomersPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Customer List</CardTitle>
-          <CardDescription>View and manage all customers</CardDescription>
-        </CardHeader>
         <CardContent>
           <div className="mb-4">
             <Input

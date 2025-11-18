@@ -68,10 +68,6 @@ export default function SalesPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Sales List</CardTitle>
-          <CardDescription>View and manage all sales</CardDescription>
-        </CardHeader>
         <CardContent>
           <div className="mb-4">
             <Input
