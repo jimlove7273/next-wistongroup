@@ -98,27 +98,30 @@ export default function SalesPage() {
                         <Button
                           variant="outline"
                           size="icon"
-                          className="h-8 w-8"
+                          className="h-8 w-8 hover:bg-blue-100 hover:border-blue-500"
+                          title="View sale details"
                         >
-                          <Eye className="h-4 w-4" />
+                          <Eye className="h-4 w-4 text-blue-600" />
                         </Button>
                       </Link>
                       <Link href={`/admin/sales/${sale.id}/edit`}>
                         <Button
                           variant="outline"
                           size="icon"
-                          className="h-8 w-8"
+                          className="h-8 w-8 hover:bg-green-100 hover:border-green-500"
+                          title="Edit sale"
                         >
-                          <Pencil className="h-4 w-4" />
+                          <Pencil className="h-4 w-4 text-green-600" />
                         </Button>
                       </Link>
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-8 w-8 hover:bg-red-100 hover:border-red-500"
                         onClick={() => deleteSale(sale.id)}
+                        title="Delete sale"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4 text-red-600" />
                       </Button>
                     </div>
                   </TableCell>

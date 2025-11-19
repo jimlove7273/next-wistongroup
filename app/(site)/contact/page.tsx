@@ -1,16 +1,18 @@
-import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { LayoutWithSidebar } from "@/components/layout-with-sidebar";
+import Link from 'next/link';
+import { Mail, MapPin, Phone } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { LayoutWithSidebar } from '@/components/layout-with-sidebar';
 
 export default function ContactPage() {
   return (
     <LayoutWithSidebar>
-      <main className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold mb-2 text-slate-900">Contact Us</h1>
-        <p className="text-slate-600 mb-12">
-          We'd love to hear from you. Get in touch with us today.
-        </p>
+      <main className="mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold mb-2 text-slate-900">Contact Us</h1>
+          <p className="text-slate-600 mb-12">
+            We'd love to hear from you. Get in touch with us today.
+          </p>
+        </div>
 
         <div className="mb-12 border rounded-lg overflow-hidden">
           <iframe
@@ -23,7 +25,7 @@ export default function ContactPage() {
           ></iframe>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 mb-12">
+        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 mb-12">
           {/* Contact Information */}
           <div>
             <h2 className="text-2xl font-bold mb-6 text-slate-800">
