@@ -1,10 +1,25 @@
-import { LayoutWithSidebar } from "@/components/layout-with-sidebar";
+import { LayoutWithSidebar } from '@/components/layout-with-sidebar';
 
 export default function TermsPage() {
   return (
     <LayoutWithSidebar>
+      {/* Hero Section */}
+      <div
+        className="w-full h-80 bg-cover bg-center flex items-center justify-center relative overflow-hidden"
+        style={{ backgroundImage: 'url(/asus-rog-motherboard.jpg)' }}
+      >
+        <div className="absolute inset-0 bg-black/70"></div>
+        <div className="relative z-10 text-center px-4 max-w-4xl">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Terms of Use
+          </h1>
+        </div>
+      </div>
+
       <main className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold mb-8 text-slate-900">Terms of Use</h1>
+        <h1 className="text-4xl font-bold mb-8 text-slate-900 sr-only">
+          Terms of Use
+        </h1>
 
         <div className="space-y-8 text-slate-700 leading-relaxed">
           {/* Agreement */}
