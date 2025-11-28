@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import Link from "next/link";
+import Link from 'next/link';
 import {
   ShoppingCart,
   User,
@@ -11,14 +11,15 @@ import {
   Minus,
   LogIn,
   Search,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useCart } from "@/components/cart-provider";
-import { useAuth } from "@/components/auth-provider";
-import { useState, useRef, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+  Menu,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useCart } from '@/components/cart-provider';
+import { useAuth } from '@/components/auth-provider';
+import { useState, useRef, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
 export function Header() {
   const pathname = usePathname();
@@ -27,12 +28,14 @@ export function Header() {
   const { user, logout, login } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const cartItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = items.reduce(
@@ -45,12 +48,12 @@ export function Header() {
     setIsLoggingIn(true);
     try {
       await login(email, password);
-      setEmail("");
-      setPassword("");
+      setEmail('');
+      setPassword('');
       setIsDropdownOpen(false);
     } catch (error) {
-      console.error("Login failed:", error);
-      alert("Login failed. Please try again.");
+      console.error('Login failed:', error);
+      alert('Login failed. Please try again.');
     } finally {
       setIsLoggingIn(false);
     }
@@ -76,11 +79,17 @@ export function Header() {
       if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
         setIsCartOpen(false);
       }
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -92,14 +101,14 @@ export function Header() {
             {/* Left: Brand */}
             <div className="flex-1 flex justify-start">
               <Link href="/" className="flex items-center space-x-2">
-                <div className="text-2xl font-bold text-primary">
+                <div className="text-xl md:text-2xl font-bold text-primary">
                   Wiston Group
                 </div>
               </Link>
             </div>
 
-            {/* Center: Search */}
-            <div className="flex-none flex justify-center w-full max-w-md">
+            {/* Center: Search - Hidden on mobile */}
+            <div className="hidden md:flex flex-none justify-center w-full max-w-md">
               <form onSubmit={handleSearch} className="w-full">
                 <div className="relative">
                   <Input
@@ -121,13 +130,26 @@ export function Header() {
               </form>
             </div>
 
+            {/* Mobile menu button */}
+            <div className="md:hidden flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </div>
+
             {/* Right: Nav & Actions */}
-            <div className="flex-1 flex justify-end items-center gap-2">
-              <nav className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex flex-1 justify-end items-center gap-2">
+              <nav className="flex items-center gap-2">
                 <Link
                   href="/about"
                   className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                    pathname === "/about" ? "text-primary bg-blue-100" : ""
+                    pathname === '/about' ? 'text-primary bg-blue-100' : ''
                   }`}
                 >
                   About Us
@@ -135,7 +157,7 @@ export function Header() {
                 <Link
                   href="/contact"
                   className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                    pathname === "/contact" ? "text-primary bg-blue-100" : ""
+                    pathname === '/contact' ? 'text-primary bg-blue-100' : ''
                   }`}
                 >
                   Contact Us
@@ -143,7 +165,7 @@ export function Header() {
                 <Link
                   href="/newsignup"
                   className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                    pathname === "/newsignup" ? "text-primary bg-blue-100" : ""
+                    pathname === '/newsignup' ? 'text-primary bg-blue-100' : ''
                   }`}
                 >
                   Open An Account
@@ -234,7 +256,7 @@ export function Header() {
                               disabled={isLoggingIn}
                             >
                               <LogIn className="h-4 w-4" />
-                              {isLoggingIn ? "Logging in..." : "Login"}
+                              {isLoggingIn ? 'Logging in...' : 'Login'}
                             </Button>
                           </form>
                         </div>
@@ -260,19 +282,165 @@ export function Header() {
             </div>
           </div>
         </div>
+
+        {/* Mobile menu backdrop */}
+        <div
+          className={`md:hidden fixed inset-0 bg-black/30 z-30 transition-opacity duration-300 ${
+            isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        ></div>
+
+        {/* Mobile menu */}
+        <div
+          ref={mobileMenuRef}
+          className={`md:hidden absolute top-16 left-0 right-0 bg-gray-50 border-b border-gray-200 shadow-lg z-50 transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen ? 'block' : 'hidden'
+          }`}
+        >
+          <div className="px-4 py-2 space-y-2">
+            <nav className="flex flex-col gap-1">
+              <Link
+                href="/about"
+                className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md ${
+                  pathname === '/about'
+                    ? 'text-primary bg-blue-50 border border-blue-100'
+                    : 'hover:bg-gray-100'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                About Us
+              </Link>
+              <Link
+                href="/contact"
+                className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md ${
+                  pathname === '/contact'
+                    ? 'text-primary bg-blue-50 border border-blue-100'
+                    : 'hover:bg-gray-100'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Contact Us
+              </Link>
+              <Link
+                href="/newsignup"
+                className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md ${
+                  pathname === '/newsignup'
+                    ? 'text-primary bg-blue-50 border border-blue-100'
+                    : 'hover:bg-gray-100'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Open An Account
+              </Link>
+
+              {/* Mobile search */}
+              <form onSubmit={handleSearch} className="pt-2">
+                <div className="relative">
+                  <Input
+                    type="search"
+                    placeholder="Search products..."
+                    className="w-full"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Button
+                    type="submit"
+                    size="icon"
+                    variant="ghost"
+                    className="absolute right-0 top-0 h-full"
+                  >
+                    <Search className="h-4 w-4" />
+                  </Button>
+                </div>
+              </form>
+            </nav>
+
+            {/* Mobile user actions */}
+            <div className="pt-2 border-t">
+              {user ? (
+                <div className="space-y-2">
+                  <div className="text-sm font-medium text-gray-900 truncate">
+                    {user.email}
+                  </div>
+                  <Link
+                    href="/profile"
+                    className="block text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 p-2 rounded-md border border-transparent hover:border-blue-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="block w-full text-left text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 p-2 rounded-md border border-transparent hover:border-blue-200"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold text-gray-900">
+                    Login to Your Account
+                  </h3>
+                  <form onSubmit={handleLogin} className="space-y-2">
+                    <div className="space-y-1">
+                      <Label htmlFor="mobile-email" className="text-xs">
+                        Email
+                      </Label>
+                      <Input
+                        id="mobile-email"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="h-9"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="mobile-password" className="text-xs">
+                        Password
+                      </Label>
+                      <Input
+                        id="mobile-password"
+                        type="password"
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="h-9"
+                      />
+                    </div>
+                    <Button
+                      type="submit"
+                      className="w-full h-9"
+                      disabled={isLoggingIn}
+                    >
+                      <LogIn className="h-4 w-4" />
+                      {isLoggingIn ? 'Logging in...' : 'Login'}
+                    </Button>
+                  </form>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </header>
 
       {/* Cart Drawer */}
       <div
         className={`fixed inset-0 bg-black/30 z-50 transition-opacity duration-300 ${
-          isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          isCartOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setIsCartOpen(false)}
       ></div>
       <div
         ref={cartRef}
         className={`fixed top-0 right-0 bg-white w-full max-w-md h-screen flex flex-col z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
-          isCartOpen ? "translate-x-0" : "translate-x-full"
+          isCartOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex items-center justify-between p-4 border-b">

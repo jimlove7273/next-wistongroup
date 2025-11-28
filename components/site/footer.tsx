@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export function Footer() {
   return (
@@ -70,8 +70,8 @@ export function Footer() {
           </div>
         </div>
         {/* Copyright notice at the bottom */}
-        <div className="mt-8 pt-4 border-t border-gray-700 flex justify-between items-center">
-          <p className="text-gray-400 text-sm">
+        <div className="mt-8 pt-4 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
+          <p className="text-gray-400 text-sm text-center md:text-left">
             © 2007–{new Date().getFullYear()} Wiston Group, Inc. All rights
             reserved.
           </p>
