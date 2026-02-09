@@ -82,5 +82,7 @@ export default function ProductsPage() {
         }
       >
         <ProductListContent />
-      </Suspense>    </>  );
+      </Suspense>
+    </>
+  );
 }
