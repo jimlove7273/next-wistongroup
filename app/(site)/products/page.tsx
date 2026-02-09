@@ -67,6 +67,7 @@ function ProductListContent() {
 export default function ProductsPage() {
   return (
     <>
+      <Suspense
         fallback={
           <div className="container px-4 py-8 lg:px-8">
             <div className="animate-pulse">
