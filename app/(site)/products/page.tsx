@@ -2,7 +2,6 @@
 
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { LayoutWithSidebar } from '@/components/layout-with-sidebar';
 import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/products';
 import { toProperCase } from '@/utils/general';
@@ -67,8 +66,7 @@ function ProductListContent() {
 
 export default function ProductsPage() {
   return (
-    <LayoutWithSidebar>
-      <Suspense
+    <>
         fallback={
           <div className="container px-4 py-8 lg:px-8">
             <div className="animate-pulse">
@@ -84,7 +82,5 @@ export default function ProductsPage() {
         }
       >
         <ProductListContent />
-      </Suspense>
-    </LayoutWithSidebar>
-  );
+      </Suspense>    </>  );
 }

@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { LayoutWithSidebar } from '@/components/layout-with-sidebar';
 
 export default function ContactPage() {
   return (
-    <LayoutWithSidebar>
+    <>
       <main className="mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-2 text-slate-900">Contact Us</h1>
@@ -192,6 +191,6 @@ export default function ContactPage() {
           </div>
         </div>
       </main>
-    </LayoutWithSidebar>
+    </>
   );
 }

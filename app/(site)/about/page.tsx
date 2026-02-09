@@ -1,8 +1,6 @@
-import { LayoutWithSidebar } from '@/components/layout-with-sidebar';
-
 export default function AboutPage() {
   return (
-    <LayoutWithSidebar>
+    <>
       {/* Hero Section */}
       <div
         className="w-full h-96 bg-cover bg-center flex items-center justify-center relative overflow-hidden"
@@ -92,6 +90,6 @@ export default function AboutPage() {
           </p>
         </section>
       </main>
-    </LayoutWithSidebar>
+    </>
   );
 }

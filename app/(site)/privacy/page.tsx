@@ -1,8 +1,6 @@
-import { LayoutWithSidebar } from '@/components/layout-with-sidebar';
-
 export default function PrivacyPage() {
   return (
-    <LayoutWithSidebar>
+    <>
       {/* Hero Section */}
       <div
         className="w-full h-80 bg-cover bg-center flex items-center justify-center relative overflow-hidden"
@@ -192,6 +190,6 @@ export default function PrivacyPage() {
           </section>
         </div>
       </main>
-    </LayoutWithSidebar>
+    </>
   );
 }
