@@ -16,6 +16,16 @@ const supabase = createClient(supabaseUrl, supabaseKey);
  * Map database product to app product format
  */
 function mapDBProductToAppProduct(dbProduct: DBProduct): Product {
+  // Collect list3-list20 specifications (filter out empty ones)
+  const specs: { [key: string]: string } = {};
+  for (let i = 3; i <= 20; i++) {
+    const key = `list${i}` as keyof DBProduct;
+    const value = dbProduct[key];
+    if (value && value.toString().trim()) {
+      specs[`Spec${i - 2}`] = value.toString();
+    }
+  }
+
   return {
     id: dbProduct.id.toString(),
     sku: dbProduct.partnumber || '',
@@ -29,9 +39,9 @@ function mapDBProductToAppProduct(dbProduct: DBProduct): Product {
     featured: dbProduct.featured === 1,
     weeklySpecial: dbProduct.specials === 1,
     specifications: {
-      Color: dbProduct.color || 'N/A',
-      Brand: dbProduct.brand || 'N/A',
       PartNumber: dbProduct.partnumber || 'N/A',
+      Brand: dbProduct.brand || 'N/A',
+      ...specs,
     },
   };
 }
@@ -117,10 +127,19 @@ export async function getAllProducts(): Promise<Product[]> {
  */
 export async function getProductById(id: string): Promise<Product | null> {
   try {
+    console.log('getProductById called with id:', id, 'type:', typeof id);
+
+    // Validate and parse the ID
+    const numId = parseInt(id, 10);
+    if (isNaN(numId)) {
+      console.error('Invalid product ID (not a number):', id);
+      return null;
+    }
+
     const { data, error } = await supabase
       .from('products')
       .select('*')
-      .eq('id', parseInt(id))
+      .eq('id', numId)
       .single();
 
     if (error) {
@@ -128,6 +147,7 @@ export async function getProductById(id: string): Promise<Product | null> {
       return null;
     }
 
+    console.log('Product found:', data?.id);
     return mapDBProductToAppProduct(data as DBProduct);
   } catch (error) {
     console.error('Error in getProductById:', error);

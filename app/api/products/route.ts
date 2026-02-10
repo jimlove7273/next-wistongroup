@@ -16,6 +16,7 @@ export async function GET(request: Request) {
     const id = searchParams.get('id');
     const featured = searchParams.get('featured');
     const specials = searchParams.get('specials');
+    const listid = searchParams.get('listid');
     const limit = searchParams.get('limit');
 
     let query = supabase.from('products').select('*');
@@ -29,6 +30,9 @@ export async function GET(request: Request) {
     if (specials !== null && specials !== undefined) {
       query = query.eq('specials', parseInt(specials));
     }
+    if (listid) {
+      query = query.eq('listid', parseInt(listid));
+    }
 
     if (limit) {
       query = query.limit(parseInt(limit));
@@ -36,15 +40,34 @@ export async function GET(request: Request) {
 
     query = query.order('created_at', { ascending: false });
 
+    const { data, error } = id ? await query.single() : await query;
+    if (error) throw error;
+
+    // Normalize DB rows to app product shape
+    const mapRow = (row: any) => ({
+      id: String(row.id),
+      sku: row.partnumber || '',
+      name: row.description || '',
+      description: row.extra || '',
+      price: row.price || 0,
+      image: row.image || '/placeholder.svg',
+      category: row.list1 || 'Uncategorized',
+      subcategory: row.list2 || 'General',
+      brand: row.brand || 'Unknown',
+      featured: row.featured === 1,
+      weeklySpecial: row.specials === 1,
+      specifications: {
+        Color: row.color || 'N/A',
+        Brand: row.brand || 'N/A',
+        PartNumber: row.partnumber || 'N/A',
+      },
+    });
+
     if (id) {
-      const { data, error } = await query.single();
-      if (error) throw error;
-      return Response.json(data);
+      return Response.json(mapRow(data));
     }
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return Response.json(data);
+    return Response.json((data || []).map(mapRow));
   } catch (error) {
     console.error('GET products error:', error);
     return Response.json(

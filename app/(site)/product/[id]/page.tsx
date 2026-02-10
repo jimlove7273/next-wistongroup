@@ -1,10 +1,8 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import { products } from '@/lib/products';
+import { getProductById } from '@/lib/db-products';
 import ProductDetailContent from '@/components/product-detail-content';
 import RelatedProducts from '@/components/related-products';
 
@@ -15,7 +13,7 @@ export default async function ProductDetailPage({
 }) {
   const { id } = await params;
 
-  const product = products.find((p) => p.id === id);
+  const product = await getProductById(id);
 
   if (!product) {
     notFound();
