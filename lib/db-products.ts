@@ -32,7 +32,7 @@ function mapDBProductToAppProduct(dbProduct: DBProduct): Product {
     name: dbProduct.description || '',
     description: dbProduct.extra || '',
     price: dbProduct.price || 0,
-    image: '/placeholder.svg', // Use placeholder since DB doesn't have image field
+    image: '/products/' + dbProduct.partnumber + '.jpg' || '/placeholder.svg', // Use placeholder since DB doesn't have image field
     category: dbProduct.list1 || 'Uncategorized',
     subcategory: dbProduct.list2 || 'General',
     brand: dbProduct.brand || 'Unknown',
@@ -65,7 +65,6 @@ export async function getFeaturedProducts(
       return [];
     }
 
-    console.log('Featured products fetched:', data?.length);
     return (data as DBProduct[]).map(mapDBProductToAppProduct);
   } catch (error) {
     console.error('Error in getFeaturedProducts:', error);
@@ -92,7 +91,6 @@ export async function getSpecialProducts(
       return [];
     }
 
-    console.log('Special products fetched:', data?.length);
     return (data as DBProduct[]).map(mapDBProductToAppProduct);
   } catch (error) {
     console.error('Error in getSpecialProducts:', error);

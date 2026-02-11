@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import { Suspense, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { ProductCard } from '@/components/product-card';
-import { products } from '@/lib/products';
-import { toProperCase } from '@/utils/general';
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { ProductCard } from "@/components/product-card";
+import { products } from "@/lib/products";
+import { toProperCase } from "@/utils/general";
+import { getCategoryPathByValue } from "@/utils/pathtools";
 
 function ProductListContent() {
   const searchParams = useSearchParams();
-  const category = searchParams.get('category');
-  const subcategory = searchParams.get('subcategory');
-  const brand = searchParams.get('brand');
+  const category = searchParams.get("category");
+  const subcategory = searchParams.get("subcategory");
+  const brand = searchParams.get("brand");
 
   const [apiProducts, setApiProducts] = useState<any[] | null>(null);
   const [loadingApi, setLoadingApi] = useState(false);
@@ -23,11 +24,11 @@ function ProductListContent() {
       try {
         setLoadingApi(true);
         const res = await fetch(`/api/products?listid=${listid}`);
-        if (!res.ok) throw new Error('Failed to fetch');
+        if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
         setApiProducts(Array.isArray(data) ? data : [data]);
       } catch (e) {
-        console.error('Error fetching products by listid', e);
+        console.error("Error fetching products by listid", e);
         setApiProducts([]);
       } finally {
         setLoadingApi(false);
@@ -64,16 +65,21 @@ function ProductListContent() {
     if (brand) return `${toProperCase(brand)} Products`;
     if (subcategory) return subcategory;
     if (category) return category;
-    return 'All Products';
+    return "All Products";
   };
 
   return (
     <div className="container px-4 py-8 lg:px-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">{getTitle()}</h1>
+        <div className="text-xs text-gray-400 mb-4">
+          Home &gt; {getCategoryPathByValue(Number(getTitle()))?.path ?? ""}
+        </div>
+        <h1 className="text-3xl font-bold mb-2">
+          {getCategoryPathByValue(Number(getTitle()))?.label ?? ""}
+        </h1>
         <p className="text-muted-foreground">
-          {filteredProducts.length}{' '}
-          {filteredProducts.length === 1 ? 'product' : 'products'} found
+          {filteredProducts.length}{" "}
+          {filteredProducts.length === 1 ? "product" : "products"} found
         </p>
       </div>
 

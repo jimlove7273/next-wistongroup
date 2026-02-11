@@ -33,14 +33,15 @@ export default function RMAsPage() {
   const { rmas, deleteRMA } = useAdminData();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(50);
 
-  const filteredRMAs = rmas.filter(
-    (rma) =>
-      rma.rmaid.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      rma.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      rma.email.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredRMAs = rmas.filter((rma) => {
+    const id = (rma.rmaid || '').toString().toLowerCase();
+    const company = (rma.company || '').toString().toLowerCase();
+    const email = (rma.email || '').toString().toLowerCase();
+    const term = searchTerm.toLowerCase();
+    return id.includes(term) || company.includes(term) || email.includes(term);
+  });
 
   // Pagination logic
   const totalPages = Math.ceil(filteredRMAs.length / pageSize);
@@ -149,9 +150,10 @@ export default function RMAsPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="25">25</SelectItem>
                   <SelectItem value="50">50</SelectItem>
                   <SelectItem value="100">100</SelectItem>
+                  <SelectItem value="250">250</SelectItem>
                 </SelectContent>
               </Select>
               <span className="text-sm text-muted-foreground">

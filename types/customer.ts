@@ -1,13 +1,17 @@
 export type CustomerType = {
   id: number;
-  companyName: string;
-  contact: string;
-  address1: string;
-  address2: string;
-  city: string;
-  state: string;
-  zipcode: string;
-  email: string;
-  phone: string;
-  fax: string;
+  created_at?: string;
+  customerID?: string | null;
+  company?: string | null;
+  dba?: string | null;
+  address1?: string | null;
+  address2?: string | null;
+  city?: string | null;
+  state?: string | null;
+  zipcode?: string | null;
+  phone?: string | null;
+  sales?: number | null;
+  email?: string | null;
+  passwd?: string | null;
+  taxable?: string | null;
 };

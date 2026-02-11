@@ -48,20 +48,23 @@ export async function POST(request: Request) {
   try {
     const body: Partial<Customer> = await request.json();
 
+    // Strip id/created_at; let DB handle them
+    const { id, created_at, ...dataToInsert } = body;
+
     const { data, error } = await supabase
       .from('customers')
-      .insert([body])
+      .insert([dataToInsert]) // no id here
       .select()
       .single();
 
     if (error) throw error;
+
     return Response.json(data, { status: 201 });
   } catch (error) {
     console.error('POST customers error:', error);
-    return Response.json(
-      { error: 'Failed to create customer' },
-      { status: 500 },
-    );
+    const message =
+      error instanceof Error ? error.message : 'Failed to create customer';
+    return Response.json({ error: message }, { status: 500 });
   }
 }
 

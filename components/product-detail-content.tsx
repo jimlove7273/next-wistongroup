@@ -39,7 +39,7 @@ export default function ProductDetailContent({
 
       {/* Category, Subcategory, Brand */}
       <div className="space-y-2 text-sm mb-6 pb-6 border-b">
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-4">
           <span className="text-muted-foreground">Category:</span>
           <Link
             href={`/products?category=${encodeURIComponent(product.category)}`}
@@ -48,7 +48,7 @@ export default function ProductDetailContent({
             {product.category}
           </Link>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-4">
           <span className="text-muted-foreground">Subcategory:</span>
           <Link
             href={`/products?category=${encodeURIComponent(product.category)}&subcategory=${encodeURIComponent(product.subcategory)}`}
@@ -57,7 +57,7 @@ export default function ProductDetailContent({
             {product.subcategory}
           </Link>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-4">
           <span className="text-muted-foreground">Brand:</span>
           <Link
             href={`/products?brand=${encodeURIComponent(product.brand)}`}

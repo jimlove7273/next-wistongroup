@@ -13,22 +13,20 @@ export default async function HomePage() {
 
   // Use fallback products if none are found
   if (featuredProducts.length === 0) {
-    console.log('No featured products found, using fallback');
     const fallback = await getFallbackProducts(3);
     featuredProducts = fallback;
   }
 
   if (weeklySpecials.length === 0) {
-    console.log('No special products found, using fallback');
     const fallback = await getFallbackProducts(6);
     weeklySpecials = fallback;
   }
 
   console.log(
     'HomePage - Featured:',
-    featuredProducts.length,
+    featuredProducts,
     'Specials:',
-    weeklySpecials.length,
+    weeklySpecials,
   );
 
   return (
@@ -61,7 +59,7 @@ export default async function HomePage() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">Featured Products</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -73,7 +71,7 @@ export default async function HomePage() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">Weekly Specials</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9">
             {weeklySpecials.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

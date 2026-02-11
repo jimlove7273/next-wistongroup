@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { ShoppingCart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { useAuth } from '@/components/auth-provider';
-import { useCart } from '@/components/cart-provider';
-import type { Product } from '@/lib/products';
+import Link from "next/link";
+import Image from "next/image";
+import { ShoppingCart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { useAuth } from "@/components/auth-provider";
+import { useCart } from "@/components/cart-provider";
+import type { Product } from "@/lib/products";
 
 interface ProductCardProps {
   product: Product;
@@ -28,11 +28,11 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Card className="group overflow-hidden hover:shadow-lg transition-shadow">
+    <Card className="group overflow-hidden hover:shadow-lg transition-shadow p-8">
       <Link href={`/product/${product.id}`}>
         <div className="aspect-square relative overflow-hidden bg-muted">
           <Image
-            src={product.image || '/placeholder.svg'}
+            src={`/products/${product.sku}.jpg`}
             alt={product.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"

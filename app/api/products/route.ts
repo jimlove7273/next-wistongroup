@@ -50,7 +50,6 @@ export async function GET(request: Request) {
       name: row.description || '',
       description: row.extra || '',
       price: row.price || 0,
-      image: row.image || '/placeholder.svg',
       category: row.list1 || 'Uncategorized',
       subcategory: row.list2 || 'General',
       brand: row.brand || 'Unknown',
