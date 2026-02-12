@@ -42,173 +42,174 @@ import {
 import { Label } from '@/components/ui/label';
 
 function CreateCustomerForm({
-  onSave,
-  onCancel,
+  form,
+  setForm,
 }: {
-  onSave: (data: any) => Promise<void> | void;
-  onCancel: () => void;
+  form: any;
+  setForm: (form: any) => void;
 }) {
-  const [form, setForm] = useState({
-    company: '',
-    dba: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    email: '',
-    phone: '',
-    customerID: '',
-    passwd: '',
-    sales: 1,
-    taxable: 0,
-  });
-
   return (
-    <div className="space-y-5">
-      {/* All Fields in 3 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="create-company" className="text-sm font-medium">
-            Company Name <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            id="create-company"
-            value={form.company}
-            onChange={(e) => setForm({ ...form, company: e.target.value })}
-            placeholder="Enter company name"
-            required
-          />
+    <div className="space-y-8">
+      {/* Basic Information Section */}
+      <div className="space-y-4">
+        <div className="pb-2 border-b">
+          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+            Basic Information
+          </h3>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="create-dba" className="text-sm font-medium">
-            DBA
-          </Label>
-          <Input
-            id="create-dba"
-            value={form.dba}
-            onChange={(e) => setForm({ ...form, dba: e.target.value })}
-            placeholder="Doing business as"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="create-customerID" className="text-sm font-medium">
-            Customer ID
-          </Label>
-          <Input
-            id="create-customerID"
-            value={form.customerID}
-            onChange={(e) => setForm({ ...form, customerID: e.target.value })}
-            placeholder="Enter customer ID"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="create-email" className="text-sm font-medium">
-            Email <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            id="create-email"
-            type="email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            placeholder="customer@example.com"
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="create-phone" className="text-sm font-medium">
-            Phone
-          </Label>
-          <Input
-            id="create-phone"
-            type="tel"
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            placeholder="(555) 123-4567"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="create-passwd" className="text-sm font-medium">
-            Password <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            id="create-passwd"
-            type="password"
-            value={form.passwd}
-            onChange={(e) => setForm({ ...form, passwd: e.target.value })}
-            placeholder="Enter customer password"
-            required
-          />
-        </div>
-
-        <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="create-address1" className="text-sm font-medium">
-            Address Line 1
-          </Label>
-          <Input
-            id="create-address1"
-            value={form.address1}
-            onChange={(e) => setForm({ ...form, address1: e.target.value })}
-            placeholder="Street address"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="create-address2" className="text-sm font-medium">
-            Address Line 2
-          </Label>
-          <Input
-            id="create-address2"
-            value={form.address2}
-            onChange={(e) => setForm({ ...form, address2: e.target.value })}
-            placeholder="Apt, suite, etc."
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="create-city" className="text-sm font-medium">
-            City
-          </Label>
-          <Input
-            id="create-city"
-            value={form.city}
-            onChange={(e) => setForm({ ...form, city: e.target.value })}
-            placeholder="City"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="create-state" className="text-sm font-medium">
-            State
-          </Label>
-          <Input
-            id="create-state"
-            value={form.state}
-            onChange={(e) => setForm({ ...form, state: e.target.value })}
-            placeholder="CA"
-            maxLength={2}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="create-zipcode" className="text-sm font-medium">
-            Zip Code
-          </Label>
-          <Input
-            id="create-zipcode"
-            value={form.zipcode}
-            onChange={(e) => setForm({ ...form, zipcode: e.target.value })}
-            placeholder="12345"
-          />
+        <div className="grid grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="create-company" className="text-sm font-medium">
+              Company Name <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="create-company"
+              value={form.company}
+              onChange={(e) => setForm({ ...form, company: e.target.value })}
+              placeholder="Enter company name"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-dba" className="text-sm font-medium">
+              DBA
+            </Label>
+            <Input
+              id="create-dba"
+              value={form.dba}
+              onChange={(e) => setForm({ ...form, dba: e.target.value })}
+              placeholder="Doing business as"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-customerID" className="text-sm font-medium">
+              Customer ID
+            </Label>
+            <Input
+              id="create-customerID"
+              value={form.customerID}
+              onChange={(e) => setForm({ ...form, customerID: e.target.value })}
+              placeholder="Enter customer ID"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex justify-end space-x-3 pt-4 border-t">
-        <Button variant="outline" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button onClick={() => onSave(form)} className="min-w-[100px]">
-          Create Customer
-        </Button>
+      {/* Contact Information Section */}
+      <div className="space-y-4">
+        <div className="pb-2 border-b">
+          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+            Contact Information
+          </h3>
+        </div>
+        <div className="grid grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="create-email" className="text-sm font-medium">
+              Email <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="create-email"
+              type="email"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="customer@example.com"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-phone" className="text-sm font-medium">
+              Phone
+            </Label>
+            <Input
+              id="create-phone"
+              type="tel"
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              placeholder="(555) 123-4567"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-passwd" className="text-sm font-medium">
+              Password <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="create-passwd"
+              type="password"
+              value={form.passwd}
+              onChange={(e) => setForm({ ...form, passwd: e.target.value })}
+              placeholder="Enter customer password"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Address Section */}
+      <div className="space-y-4">
+        <div className="pb-2 border-b">
+          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+            Address
+          </h3>
+        </div>
+        <div className="grid grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="create-address1" className="text-sm font-medium">
+              Address Line 1
+            </Label>
+            <Input
+              id="create-address1"
+              value={form.address1}
+              onChange={(e) => setForm({ ...form, address1: e.target.value })}
+              placeholder="Street address"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-address2" className="text-sm font-medium">
+              Address Line 2
+            </Label>
+            <Input
+              id="create-address2"
+              value={form.address2}
+              onChange={(e) => setForm({ ...form, address2: e.target.value })}
+              placeholder="Apt, suite, etc."
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="create-city" className="text-sm font-medium">
+              City
+            </Label>
+            <Input
+              id="create-city"
+              value={form.city}
+              onChange={(e) => setForm({ ...form, city: e.target.value })}
+              placeholder="City"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-state" className="text-sm font-medium">
+              State
+            </Label>
+            <Input
+              id="create-state"
+              value={form.state}
+              onChange={(e) => setForm({ ...form, state: e.target.value })}
+              placeholder="CA"
+              maxLength={2}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-zipcode" className="text-sm font-medium">
+              Zip Code
+            </Label>
+            <Input
+              id="create-zipcode"
+              value={form.zipcode}
+              onChange={(e) => setForm({ ...form, zipcode: e.target.value })}
+              placeholder="12345"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -226,6 +227,21 @@ export default function CustomersPage() {
   const [createCustomerOpen, setCreateCustomerOpen] = useState(false);
   const [sortField, setSortField] = useState<string | null>('company');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+  const [createForm, setCreateForm] = useState({
+    company: '',
+    dba: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zipcode: '',
+    email: '',
+    phone: '',
+    customerID: '',
+    passwd: '',
+    sales: 1,
+    taxable: 0,
+  });
 
   const filteredCustomers = customers.filter((customer) => {
     const company = (customer.company || '').toString().toLowerCase();
@@ -275,18 +291,30 @@ export default function CustomersPage() {
               Create Customer
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-5xl max-h-[85vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Create Customer</DialogTitle>
-              <DialogDescription>Add a new customer record</DialogDescription>
+          <DialogContent className="max-w-[50vw]! max-h-[75vh]">
+            <DialogHeader className="pb-4 border-b">
+              <DialogTitle className="text-xl">Create Customer</DialogTitle>
+              <DialogDescription className="text-base">
+                Add a new customer record to the system
+              </DialogDescription>
             </DialogHeader>
-            <CreateCustomerForm
-              onSave={async (payload) => {
-                await addCustomer(payload as any);
-                setCreateCustomerOpen(false);
-              }}
-              onCancel={() => setCreateCustomerOpen(false)}
-            />
+            <div className="py-6 overflow-y-auto max-h-[50vh]">
+              <CreateCustomerForm form={createForm} setForm={setCreateForm} />
+            </div>
+            <DialogFooter className="pt-6 border-t">
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button
+                onClick={async () => {
+                  await addCustomer(createForm as any);
+                  setCreateCustomerOpen(false);
+                }}
+                className="min-w-[120px]"
+              >
+                Create Customer
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
@@ -419,7 +447,7 @@ export default function CustomersPage() {
                     ) : null}
                   </button>
                 </TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="text-right"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -434,43 +462,6 @@ export default function CustomersPage() {
                   <TableCell>{customer.city}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="h-8 w-8 hover:bg-blue-100 hover:border-blue-500"
-                            title="View customer details"
-                            onClick={() => setViewCustomer(customer)}
-                          >
-                            <Eye className="h-4 w-4 text-blue-600" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Customer Details</DialogTitle>
-                            <DialogDescription>
-                              {customer.company}
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="mt-2 space-y-2">
-                            <div>
-                              <strong>Company: </strong>
-                              <span>{customer.company}</span>
-                            </div>
-                            <div>
-                              <strong>Email: </strong>
-                              <span>{customer.email}</span>
-                            </div>
-                          </div>
-                          <DialogFooter>
-                            <DialogClose>
-                              <Button>Close</Button>
-                            </DialogClose>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
-
                       <Dialog
                         open={
                           editDialogOpen && editCustomer?.id === customer.id
@@ -496,241 +487,270 @@ export default function CustomersPage() {
                             <Pencil className="h-4 w-4 text-green-600" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-5xl max-h-[85vh] overflow-y-auto">
-                          <DialogHeader>
-                            <DialogTitle>Edit Customer</DialogTitle>
-                            <DialogDescription>
+                        <DialogContent className="max-w-[50vw]! max-h-[75vh]">
+                          <DialogHeader className="pb-4 border-b">
+                            <DialogTitle className="text-xl">
+                              Edit Customer
+                            </DialogTitle>
+                            <DialogDescription className="text-base">
                               Update customer information
                             </DialogDescription>
                           </DialogHeader>
                           {editCustomer && (
-                            <div className="space-y-5">
-                              {/* All Fields in 3 Columns */}
-                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-company"
-                                    className="text-sm font-medium"
-                                  >
-                                    Company Name{' '}
-                                    <span className="text-red-500">*</span>
-                                  </Label>
-                                  <Input
-                                    id="edit-company"
-                                    value={editCustomer.company || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        company: e.target.value,
-                                      })
-                                    }
-                                    placeholder="Enter company name"
-                                    required
-                                  />
+                            <div className="py-6 overflow-y-auto max-h-[50vh] space-y-8">
+                              {/* Basic Information Section */}
+                              <div className="space-y-4">
+                                <div className="pb-2 border-b">
+                                  <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    Basic Information
+                                  </h3>
                                 </div>
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-dba"
-                                    className="text-sm font-medium"
-                                  >
-                                    DBA
-                                  </Label>
-                                  <Input
-                                    id="edit-dba"
-                                    value={editCustomer.dba || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        dba: e.target.value,
-                                      })
-                                    }
-                                    placeholder="Doing business as"
-                                  />
+                                <div className="grid grid-cols-2 gap-6">
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-company"
+                                      className="text-sm font-medium"
+                                    >
+                                      Company Name{' '}
+                                      <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input
+                                      id="edit-company"
+                                      value={editCustomer.company || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          company: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter company name"
+                                      required
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-dba"
+                                      className="text-sm font-medium"
+                                    >
+                                      DBA
+                                    </Label>
+                                    <Input
+                                      id="edit-dba"
+                                      value={editCustomer.dba || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          dba: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Doing business as"
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-customerID"
+                                      className="text-sm font-medium"
+                                    >
+                                      Customer ID
+                                    </Label>
+                                    <Input
+                                      id="edit-customerID"
+                                      value={editCustomer.customerID || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          customerID: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Enter customer ID"
+                                    />
+                                  </div>
                                 </div>
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-customerID"
-                                    className="text-sm font-medium"
-                                  >
-                                    Customer ID
-                                  </Label>
-                                  <Input
-                                    id="edit-customerID"
-                                    value={editCustomer.customerID || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        customerID: e.target.value,
-                                      })
-                                    }
-                                    placeholder="Enter customer ID"
-                                  />
-                                </div>
+                              </div>
 
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-email"
-                                    className="text-sm font-medium"
-                                  >
-                                    Email{' '}
-                                    <span className="text-red-500">*</span>
-                                  </Label>
-                                  <Input
-                                    id="edit-email"
-                                    type="email"
-                                    value={editCustomer.email || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        email: e.target.value,
-                                      })
-                                    }
-                                    placeholder="customer@example.com"
-                                    required
-                                  />
+                              {/* Contact Information Section */}
+                              <div className="space-y-4">
+                                <div className="pb-2 border-b">
+                                  <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    Contact Information
+                                  </h3>
                                 </div>
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-phone"
-                                    className="text-sm font-medium"
-                                  >
-                                    Phone
-                                  </Label>
-                                  <Input
-                                    id="edit-phone"
-                                    type="tel"
-                                    value={editCustomer.phone || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        phone: e.target.value,
-                                      })
-                                    }
-                                    placeholder="(555) 123-4567"
-                                  />
+                                <div className="grid grid-cols-2 gap-6">
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-email"
+                                      className="text-sm font-medium"
+                                    >
+                                      Email{' '}
+                                      <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input
+                                      id="edit-email"
+                                      type="email"
+                                      value={editCustomer.email || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          email: e.target.value,
+                                        })
+                                      }
+                                      placeholder="customer@example.com"
+                                      required
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-phone"
+                                      className="text-sm font-medium"
+                                    >
+                                      Phone
+                                    </Label>
+                                    <Input
+                                      id="edit-phone"
+                                      type="tel"
+                                      value={editCustomer.phone || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          phone: e.target.value,
+                                        })
+                                      }
+                                      placeholder="(555) 123-4567"
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-passwd"
+                                      className="text-sm font-medium"
+                                    >
+                                      Password
+                                    </Label>
+                                    <Input
+                                      id="edit-passwd"
+                                      type="password"
+                                      value={editCustomer.passwd || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          passwd: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Leave blank to keep current"
+                                    />
+                                  </div>
                                 </div>
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-passwd"
-                                    className="text-sm font-medium"
-                                  >
-                                    Password
-                                  </Label>
-                                  <Input
-                                    id="edit-passwd"
-                                    type="password"
-                                    value={editCustomer.passwd || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        passwd: e.target.value,
-                                      })
-                                    }
-                                    placeholder="Leave blank to keep current"
-                                  />
-                                </div>
+                              </div>
 
-                                <div className="space-y-2 md:col-span-2">
-                                  <Label
-                                    htmlFor="edit-address1"
-                                    className="text-sm font-medium"
-                                  >
-                                    Address Line 1
-                                  </Label>
-                                  <Input
-                                    id="edit-address1"
-                                    value={editCustomer.address1 || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        address1: e.target.value,
-                                      })
-                                    }
-                                    placeholder="Street address"
-                                  />
+                              {/* Address Section */}
+                              <div className="space-y-4">
+                                <div className="pb-2 border-b">
+                                  <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                    Address
+                                  </h3>
                                 </div>
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-address2"
-                                    className="text-sm font-medium"
-                                  >
-                                    Address Line 2
-                                  </Label>
-                                  <Input
-                                    id="edit-address2"
-                                    value={editCustomer.address2 || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        address2: e.target.value,
-                                      })
-                                    }
-                                    placeholder="Apt, suite, etc."
-                                  />
-                                </div>
+                                <div className="grid grid-cols-2 gap-6">
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-address1"
+                                      className="text-sm font-medium"
+                                    >
+                                      Address Line 1
+                                    </Label>
+                                    <Input
+                                      id="edit-address1"
+                                      value={editCustomer.address1 || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          address1: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Street address"
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-address2"
+                                      className="text-sm font-medium"
+                                    >
+                                      Address Line 2
+                                    </Label>
+                                    <Input
+                                      id="edit-address2"
+                                      value={editCustomer.address2 || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          address2: e.target.value,
+                                        })
+                                      }
+                                      placeholder="Apt, suite, etc."
+                                    />
+                                  </div>
 
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-city"
-                                    className="text-sm font-medium"
-                                  >
-                                    City
-                                  </Label>
-                                  <Input
-                                    id="edit-city"
-                                    value={editCustomer.city || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        city: e.target.value,
-                                      })
-                                    }
-                                    placeholder="City"
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-state"
-                                    className="text-sm font-medium"
-                                  >
-                                    State
-                                  </Label>
-                                  <Input
-                                    id="edit-state"
-                                    value={editCustomer.state || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        state: e.target.value,
-                                      })
-                                    }
-                                    placeholder="CA"
-                                    maxLength={2}
-                                  />
-                                </div>
-                                <div className="space-y-2">
-                                  <Label
-                                    htmlFor="edit-zipcode"
-                                    className="text-sm font-medium"
-                                  >
-                                    Zip Code
-                                  </Label>
-                                  <Input
-                                    id="edit-zipcode"
-                                    value={editCustomer.zipcode || ''}
-                                    onChange={(e) =>
-                                      setEditCustomer({
-                                        ...editCustomer,
-                                        zipcode: e.target.value,
-                                      })
-                                    }
-                                    placeholder="12345"
-                                  />
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-city"
+                                      className="text-sm font-medium"
+                                    >
+                                      City
+                                    </Label>
+                                    <Input
+                                      id="edit-city"
+                                      value={editCustomer.city || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          city: e.target.value,
+                                        })
+                                      }
+                                      placeholder="City"
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-state"
+                                      className="text-sm font-medium"
+                                    >
+                                      State
+                                    </Label>
+                                    <Input
+                                      id="edit-state"
+                                      value={editCustomer.state || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          state: e.target.value,
+                                        })
+                                      }
+                                      placeholder="CA"
+                                      maxLength={2}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label
+                                      htmlFor="edit-zipcode"
+                                      className="text-sm font-medium"
+                                    >
+                                      Zip Code
+                                    </Label>
+                                    <Input
+                                      id="edit-zipcode"
+                                      value={editCustomer.zipcode || ''}
+                                      onChange={(e) =>
+                                        setEditCustomer({
+                                          ...editCustomer,
+                                          zipcode: e.target.value,
+                                        })
+                                      }
+                                      placeholder="12345"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           )}
-                          <DialogFooter className="pt-4 border-t">
+                          <DialogFooter className="pt-6 border-t">
                             <DialogClose asChild>
                               <Button variant="outline">Cancel</Button>
                             </DialogClose>
@@ -745,7 +765,7 @@ export default function CustomersPage() {
                                   setEditDialogOpen(false);
                                 }
                               }}
-                              className="min-w-[100px]"
+                              className="min-w-[120px]"
                             >
                               Save Changes
                             </Button>

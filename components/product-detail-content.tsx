@@ -29,7 +29,7 @@ export default function ProductDetailContent({
 
   return (
     <div className="flex flex-col">
-      <div className="mb-4">
+      <div className="mb-2">
         <Badge variant="secondary" className="mb-2">
           {product.brand}
         </Badge>
@@ -37,38 +37,7 @@ export default function ProductDetailContent({
         <p className="text-sm text-muted-foreground mb-8">SKU: {product.sku}</p>
       </div>
 
-      {/* Category, Subcategory, Brand */}
-      <div className="space-y-2 text-sm mb-6 pb-6 border-b">
-        <div className="flex justify-between gap-4">
-          <span className="text-muted-foreground">Category:</span>
-          <Link
-            href={`/products?category=${encodeURIComponent(product.category)}`}
-            className="font-medium hover:text-primary"
-          >
-            {product.category}
-          </Link>
-        </div>
-        <div className="flex justify-between gap-4">
-          <span className="text-muted-foreground">Subcategory:</span>
-          <Link
-            href={`/products?category=${encodeURIComponent(product.category)}&subcategory=${encodeURIComponent(product.subcategory)}`}
-            className="font-medium hover:text-primary"
-          >
-            {product.subcategory}
-          </Link>
-        </div>
-        <div className="flex justify-between gap-4">
-          <span className="text-muted-foreground">Brand:</span>
-          <Link
-            href={`/products?brand=${encodeURIComponent(product.brand)}`}
-            className="font-medium hover:text-primary"
-          >
-            {product.brand}
-          </Link>
-        </div>
-      </div>
-
-      <div className="mb-6">
+      <div>
         <p className="text-foreground leading-relaxed">{product.description}</p>
       </div>
 

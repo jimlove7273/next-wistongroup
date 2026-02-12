@@ -1,7 +1,7 @@
 export type productType = {
   id: number;
   recno: number;
-  istid: number;
+  listid: number;
   partnumber: string;
   brand: string;
   description: string;

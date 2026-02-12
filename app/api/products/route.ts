@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     const listid = searchParams.get('listid');
     const limit = searchParams.get('limit');
 
-    let query = supabase.from('products').select('*');
+    let query = supabase.from('products').select('*').eq('active', 1);
 
     if (id) {
       query = query.eq('id', id);
@@ -53,6 +53,7 @@ export async function GET(request: Request) {
       category: row.list1 || 'Uncategorized',
       subcategory: row.list2 || 'General',
       brand: row.brand || 'Unknown',
+      listid: parseInt(row.listid) || 0,
       featured: row.featured === 1,
       weeklySpecial: row.specials === 1,
       specifications: {

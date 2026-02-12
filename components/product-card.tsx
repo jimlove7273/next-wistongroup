@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { ShoppingCart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useAuth } from "@/components/auth-provider";
-import { useCart } from "@/components/cart-provider";
-import type { Product } from "@/lib/products";
+import Link from 'next/link';
+import Image from 'next/image';
+import { ShoppingCart } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { useAuth } from '@/components/auth-provider';
+import { useCart } from '@/components/cart-provider';
+import type { Product } from '@/lib/products';
 
 interface ProductCardProps {
   product: Product;
@@ -32,7 +32,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <Link href={`/product/${product.id}`}>
         <div className="aspect-square relative overflow-hidden bg-muted">
           <Image
-            src={`/products/${product.sku}.jpg`}
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE + '/' + product.sku}.jpg`}
             alt={product.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -42,7 +42,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardContent className="p-4">
         <Link href={`/product/${product.id}`}>
           <p className="text-xs text-muted-foreground mb-1">{product.sku}</p>
-          <h3 className="font-semibold text-sm line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+          <h3 className="font-semibold text-md line-clamp-2 mb-2 group-hover:text-primary transition-colors">
             {product.name}
           </h3>
         </Link>
@@ -52,7 +52,7 @@ export function ProductCard({ product }: ProductCardProps) {
               ${product.price.toFixed(2)}
             </p>
           ) : (
-            <p className="text-xs text-muted-foreground">Login to see price</p>
+            <p className="text-sm text-muted-foreground">Login to see price</p>
           )}
         </div>
       </CardContent>

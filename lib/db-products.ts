@@ -32,7 +32,11 @@ function mapDBProductToAppProduct(dbProduct: DBProduct): Product {
     name: dbProduct.description || '',
     description: dbProduct.extra || '',
     price: dbProduct.price || 0,
-    image: '/products/' + dbProduct.partnumber + '.jpg' || '/placeholder.svg', // Use placeholder since DB doesn't have image field
+    image:
+      process.env.NEXT_PUBLIC_SUPABASE_STORAGE +
+        '/' +
+        dbProduct.partnumber +
+        '.jpg' || '/placeholder.svg', // Use placeholder since DB doesn't have image field
     category: dbProduct.list1 || 'Uncategorized',
     subcategory: dbProduct.list2 || 'General',
     brand: dbProduct.brand || 'Unknown',

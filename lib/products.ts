@@ -212,7 +212,7 @@ export const categories = [
     name: 'Notebooks',
     subcategories: [
       { label: 'Brand New', value: 119 },
-      { label: 'Refurbished', value: 129 },
+      { label: 'Refurbished', value: 126 },
     ],
   },
   {

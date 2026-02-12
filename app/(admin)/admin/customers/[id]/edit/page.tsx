@@ -42,16 +42,16 @@ export default function EditCustomerPage({
   useEffect(() => {
     if (customer) {
       setFormData({
-        companyName: customer.companyName,
-        contact: customer.contact,
-        address1: customer.address1,
-        address2: customer.address2,
-        city: customer.city,
-        state: customer.state,
-        zipcode: customer.zipcode,
-        email: customer.email,
-        phone: customer.phone,
-        fax: customer.fax,
+        companyName: customer.company || '',
+        contact: customer.dba || '',
+        address1: customer.address1 || '',
+        address2: customer.address2 || '',
+        city: customer.city || '',
+        state: customer.state || '',
+        zipcode: customer.zipcode || '',
+        email: customer.email || '',
+        phone: customer.phone || '',
+        fax: '',
       });
     }
   }, [customer]);
@@ -105,8 +105,8 @@ export default function EditCustomerPage({
             <CardTitle>Customer Details</CardTitle>
             <CardDescription>Edit the customer information</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CardContent className="space-y-4 max-h-[60vh] overflow-y-auto">
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="companyName">Company Name</Label>
                 <Input
@@ -158,27 +158,29 @@ export default function EditCustomerPage({
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="address1">Address Line 1</Label>
-              <Input
-                id="address1"
-                name="address1"
-                value={formData.address1}
-                onChange={handleChange}
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="address1">Address Line 1</Label>
+                <Input
+                  id="address1"
+                  name="address1"
+                  value={formData.address1}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="address2">Address Line 2</Label>
+                <Input
+                  id="address2"
+                  name="address2"
+                  value={formData.address2}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="address2">Address Line 2</Label>
-              <Input
-                id="address2"
-                name="address2"
-                value={formData.address2}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
                 <Input

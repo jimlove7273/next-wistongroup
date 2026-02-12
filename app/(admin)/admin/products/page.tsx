@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -22,7 +22,9 @@ import {
 import Link from 'next/link';
 import { useAdminData } from '@/hooks/use-admin-data';
 import { productType } from '@/types';
-import { Eye, Pencil, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
+import { categories } from '@/lib/products';
+import { getCategoryPathByValue } from '@/utils/pathtools';
+import { Pencil, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -35,6 +37,10 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 
+function getCategoryName(listid: number): string {
+  return String(listid);
+}
+
 function CreateProductForm({
   onSave,
   onCancel,
@@ -44,7 +50,7 @@ function CreateProductForm({
 }) {
   const empty: any = {
     recno: 0,
-    istid: 0,
+    listid: 0,
     partnumber: '',
     brand: '',
     description: '',
@@ -63,97 +69,99 @@ function CreateProductForm({
   for (let i = 1; i <= 20; i++) empty[`list${i}`] = '';
   const [form, setForm] = useState<any>(empty);
   return (
-    <div className="space-y-3 max-h-[60vh] overflow-auto">
-      <div>
-        <Label>Part Number</Label>
-        <Input
-          value={form.partnumber}
-          onChange={(e) => setForm({ ...form, partnumber: e.target.value })}
-        />
-      </div>
-      <div>
-        <Label>Brand</Label>
-        <Input
-          value={form.brand}
-          onChange={(e) => setForm({ ...form, brand: e.target.value })}
-        />
-      </div>
-      <div>
-        <Label>Description</Label>
-        <Input
-          value={form.description}
-          onChange={(e) => setForm({ ...form, description: e.target.value })}
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-2">
+    <Card>
+      <CardContent className="space-y-4 max-h-[50vh] overflow-y-auto p-6">
         <div>
-          <Label>Buy</Label>
+          <Label>Part Number</Label>
           <Input
-            value={String(form.buy)}
-            onChange={(e) =>
-              setForm({ ...form, buy: parseInt(e.target.value || '0') })
-            }
+            value={form.partnumber}
+            onChange={(e) => setForm({ ...form, partnumber: e.target.value })}
           />
         </div>
         <div>
-          <Label>Get</Label>
+          <Label>Brand</Label>
           <Input
-            value={String(form.get)}
-            onChange={(e) =>
-              setForm({ ...form, get: parseInt(e.target.value || '0') })
-            }
+            value={form.brand}
+            onChange={(e) => setForm({ ...form, brand: e.target.value })}
           />
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-2">
         <div>
-          <Label>Out of stock</Label>
-          <select
-            value={String(form.outofstock)}
-            onChange={(e) =>
-              setForm({ ...form, outofstock: parseInt(e.target.value) })
-            }
-            className="w-full border rounded px-2 py-1"
-          >
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-          </select>
+          <Label>Description</Label>
+          <Input
+            value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+          />
         </div>
-        <div>
-          <Label>Free shipping</Label>
-          <select
-            value={String(form.freeshipping)}
-            onChange={(e) =>
-              setForm({ ...form, freeshipping: parseInt(e.target.value) })
-            }
-            className="w-full border rounded px-2 py-1"
-          >
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-          </select>
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <Label>Buy</Label>
+            <Input
+              value={String(form.buy)}
+              onChange={(e) =>
+                setForm({ ...form, buy: parseInt(e.target.value || '0') })
+              }
+            />
+          </div>
+          <div>
+            <Label>Get</Label>
+            <Input
+              value={String(form.get)}
+              onChange={(e) =>
+                setForm({ ...form, get: parseInt(e.target.value || '0') })
+              }
+            />
+          </div>
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-2">
-        {Array.from({ length: 20 }).map((_, i) => {
-          const key = `list${i + 1}`;
-          return (
-            <div key={key}>
-              <Label>{key}</Label>
-              <Input
-                value={form[key]}
-                onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-              />
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex justify-end space-x-2">
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <Label>Out of stock</Label>
+            <select
+              value={String(form.outofstock)}
+              onChange={(e) =>
+                setForm({ ...form, outofstock: parseInt(e.target.value) })
+              }
+              className="w-full border rounded px-2 py-1"
+            >
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+          <div>
+            <Label>Free shipping</Label>
+            <select
+              value={String(form.freeshipping)}
+              onChange={(e) =>
+                setForm({ ...form, freeshipping: parseInt(e.target.value) })
+              }
+              className="w-full border rounded px-2 py-1"
+            >
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+        </div>
+        <div className="space-y-2">
+          {Array.from({ length: 20 }).map((_, i) => {
+            const key = `list${i + 1}`;
+            return (
+              <div key={key}>
+                <Label>{key}</Label>
+                <Input
+                  value={form[key]}
+                  onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-end space-x-2">
         <Button variant="ghost" onClick={onCancel}>
           Cancel
         </Button>
         <Button onClick={() => onSave(form)}>Save</Button>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -169,10 +177,12 @@ export default function ProductsPage() {
   const [sortField, setSortField] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
 
-  const filteredProducts = products.filter((product) => {
-    const part = (product.partnumber || '').toString().toLowerCase();
+  console.log('products', products);
+
+  const filteredProducts = products.filter((product: any) => {
+    const part = (product.sku || '').toString().toLowerCase();
     const brand = (product.brand || '').toString().toLowerCase();
-    const desc = (product.description || '').toString().toLowerCase();
+    const desc = (product.name || '').toString().toLowerCase();
     const term = searchTerm.toLowerCase();
     return part.includes(term) || brand.includes(term) || desc.includes(term);
   });
@@ -212,7 +222,7 @@ export default function ProductsPage() {
           <DialogTrigger asChild>
             <Button onClick={() => setCreateOpen(true)}>Create Product</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="!max-w-[50vw] max-h-[75vh]">
             <DialogHeader>
               <DialogTitle>Create Product</DialogTitle>
               <DialogDescription>Add a new product</DialogDescription>
@@ -246,7 +256,7 @@ export default function ProductsPage() {
                   <button
                     className="flex items-center space-x-1"
                     onClick={() => {
-                      const field = 'partnumber';
+                      const field = 'sku';
                       if (sortField === field)
                         setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
                       else {
@@ -256,7 +266,7 @@ export default function ProductsPage() {
                     }}
                   >
                     <span>Part Number</span>
-                    {sortField === 'partnumber' ? (
+                    {sortField === 'sku' ? (
                       sortDir === 'asc' ? (
                         <ChevronUp className="w-3 h-3" />
                       ) : (
@@ -288,22 +298,23 @@ export default function ProductsPage() {
                     ) : null}
                   </button>
                 </TableHead>
+                <TableHead>Category</TableHead>
                 <TableHead>Description</TableHead>
                 <TableHead>Price</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="text-right"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedProducts.map((product) => (
+              {paginatedProducts.map((product: any) => (
                 <TableRow key={product.id}>
                   <TableCell className="font-medium flex items-center space-x-2">
-                    <span>{product.partnumber}</span>
+                    <span>{product.sku}</span>
                     {product.featured ? (
                       <span className="text-xs px-2 py-0.5 rounded bg-green-100 text-green-800">
                         F
                       </span>
                     ) : null}
-                    {product.specials ? (
+                    {product.weeklySpecial ? (
                       <span className="text-xs px-2 py-0.5 rounded bg-orange-100 text-orange-800">
                         S
                       </span>
@@ -311,54 +322,16 @@ export default function ProductsPage() {
                   </TableCell>
                   <TableCell>{product.brand}</TableCell>
                   <TableCell>
-                    {(product.description || '').length > 80
-                      ? `${product.description.slice(0, 80)}...`
-                      : product.description}
+                    {getCategoryPathByValue(product.listid)?.label}
+                  </TableCell>
+                  <TableCell>
+                    {(product.name || '').length > 80
+                      ? `${product.name.slice(0, 80)}...`
+                      : product.name}
                   </TableCell>
                   <TableCell>${(product.price || 0).toFixed(2)}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="h-8 w-8 hover:bg-blue-100 hover:border-blue-500"
-                            title="View product details"
-                            onClick={() => setViewProduct(product)}
-                          >
-                            <Eye className="h-4 w-4 text-blue-600" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Product Details</DialogTitle>
-                            <DialogDescription>
-                              {product.partnumber}
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="mt-2 space-y-2">
-                            <div>
-                              <strong>Name: </strong>
-                              <span>{product.description}</span>
-                            </div>
-                            <div>
-                              <strong>Brand: </strong>
-                              <span>{product.brand}</span>
-                            </div>
-                            <div>
-                              <strong>Price: </strong>
-                              <span>${(product.price || 0).toFixed(2)}</span>
-                            </div>
-                          </div>
-                          <DialogFooter>
-                            <DialogClose>
-                              <Button>Close</Button>
-                            </DialogClose>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
-
                       <Dialog
                         open={editDialogOpen && editProduct?.id === product.id}
                         onOpenChange={(open) => {
@@ -382,7 +355,7 @@ export default function ProductsPage() {
                             <Pencil className="h-4 w-4 text-green-600" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
+                        <DialogContent className="!max-w-[50vw] max-h-[75vh]">
                           <DialogHeader>
                             <DialogTitle>Edit Product</DialogTitle>
                             <DialogDescription>
@@ -390,259 +363,265 @@ export default function ProductsPage() {
                             </DialogDescription>
                           </DialogHeader>
                           {editProduct && (
-                            <div className="space-y-3">
-                              <div>
-                                <Label>Part Number</Label>
-                                <Input
-                                  value={editProduct.partnumber}
-                                  onChange={(e) =>
-                                    setEditProduct({
-                                      ...editProduct,
-                                      partnumber: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div>
-                                <Label>Brand</Label>
-                                <Input
-                                  value={editProduct.brand}
-                                  onChange={(e) =>
-                                    setEditProduct({
-                                      ...editProduct,
-                                      brand: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div>
-                                <Label>Description</Label>
-                                <Input
-                                  value={editProduct.description}
-                                  onChange={(e) =>
-                                    setEditProduct({
-                                      ...editProduct,
-                                      description: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div>
-                                <Label>Color</Label>
-                                <Input
-                                  value={editProduct.color || ''}
-                                  onChange={(e) =>
-                                    setEditProduct({
-                                      ...editProduct,
-                                      color: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div className="grid grid-cols-2 gap-2">
+                            <Card>
+                              <CardContent className="space-y-3 max-h-[50vh] overflow-y-auto p-6">
                                 <div>
-                                  <Label>Price</Label>
+                                  <Label>Part Number</Label>
                                   <Input
-                                    type="number"
-                                    step="0.01"
-                                    value={String(editProduct.price || 0)}
+                                    value={editProduct.partnumber}
                                     onChange={(e) =>
                                       setEditProduct({
                                         ...editProduct,
-                                        price: parseFloat(
-                                          e.target.value || '0',
-                                        ),
+                                        partnumber: e.target.value,
                                       })
                                     }
                                   />
                                 </div>
                                 <div>
-                                  <Label>Discount</Label>
+                                  <Label>Brand</Label>
                                   <Input
-                                    type="number"
-                                    step="0.01"
-                                    value={String(editProduct.discount || 0)}
+                                    value={editProduct.brand}
                                     onChange={(e) =>
                                       setEditProduct({
                                         ...editProduct,
-                                        discount: parseFloat(
-                                          e.target.value || '0',
-                                        ),
-                                      })
-                                    }
-                                  />
-                                </div>
-                              </div>
-                              <div>
-                                <Label>Extra</Label>
-                                <Input
-                                  value={editProduct.extra || ''}
-                                  onChange={(e) =>
-                                    setEditProduct({
-                                      ...editProduct,
-                                      extra: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div className="grid grid-cols-3 gap-2">
-                                <div>
-                                  <Label>Featured</Label>
-                                  <select
-                                    value={String(editProduct.featured || 0)}
-                                    onChange={(e) =>
-                                      setEditProduct({
-                                        ...editProduct,
-                                        featured: parseInt(e.target.value),
-                                      })
-                                    }
-                                    className="w-full border rounded px-2 py-1"
-                                  >
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
-                                  </select>
-                                </div>
-                                <div>
-                                  <Label>Specials</Label>
-                                  <select
-                                    value={String(editProduct.specials || 0)}
-                                    onChange={(e) =>
-                                      setEditProduct({
-                                        ...editProduct,
-                                        specials: parseInt(e.target.value),
-                                      })
-                                    }
-                                    className="w-full border rounded px-2 py-1"
-                                  >
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
-                                  </select>
-                                </div>
-                                <div>
-                                  <Label>Active</Label>
-                                  <select
-                                    value={String(editProduct.active || 1)}
-                                    onChange={(e) =>
-                                      setEditProduct({
-                                        ...editProduct,
-                                        active: parseInt(e.target.value),
-                                      })
-                                    }
-                                    className="w-full border rounded px-2 py-1"
-                                  >
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div className="grid grid-cols-2 gap-2">
-                                <div>
-                                  <Label>Buy</Label>
-                                  <Input
-                                    type="number"
-                                    value={String(editProduct.buy || 0)}
-                                    onChange={(e) =>
-                                      setEditProduct({
-                                        ...editProduct,
-                                        buy: parseInt(e.target.value || '0'),
+                                        brand: e.target.value,
                                       })
                                     }
                                   />
                                 </div>
                                 <div>
-                                  <Label>Get</Label>
+                                  <Label>Description</Label>
                                   <Input
-                                    type="number"
-                                    value={String(editProduct.get || 0)}
+                                    value={editProduct.description}
                                     onChange={(e) =>
                                       setEditProduct({
                                         ...editProduct,
-                                        get: parseInt(e.target.value || '0'),
+                                        description: e.target.value,
                                       })
                                     }
                                   />
                                 </div>
-                              </div>
-                              <div className="grid grid-cols-2 gap-2">
                                 <div>
-                                  <Label>Out of stock</Label>
-                                  <select
-                                    value={String(editProduct.outofstock || 0)}
+                                  <Label>Color</Label>
+                                  <Input
+                                    value={editProduct.color || ''}
                                     onChange={(e) =>
                                       setEditProduct({
                                         ...editProduct,
-                                        outofstock: parseInt(e.target.value),
+                                        color: e.target.value,
                                       })
                                     }
-                                    className="w-full border rounded px-2 py-1"
-                                  >
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
-                                  </select>
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <div>
+                                    <Label>Price</Label>
+                                    <Input
+                                      type="number"
+                                      step="0.01"
+                                      value={String(editProduct.price || 0)}
+                                      onChange={(e) =>
+                                        setEditProduct({
+                                          ...editProduct,
+                                          price: parseFloat(
+                                            e.target.value || '0',
+                                          ),
+                                        })
+                                      }
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label>Discount</Label>
+                                    <Input
+                                      type="number"
+                                      step="0.01"
+                                      value={String(editProduct.discount || 0)}
+                                      onChange={(e) =>
+                                        setEditProduct({
+                                          ...editProduct,
+                                          discount: parseFloat(
+                                            e.target.value || '0',
+                                          ),
+                                        })
+                                      }
+                                    />
+                                  </div>
                                 </div>
                                 <div>
-                                  <Label>Free shipping</Label>
-                                  <select
-                                    value={String(
-                                      editProduct.freeshipping || 0,
-                                    )}
+                                  <Label>Extra</Label>
+                                  <Input
+                                    value={editProduct.extra || ''}
                                     onChange={(e) =>
                                       setEditProduct({
                                         ...editProduct,
-                                        freeshipping: parseInt(e.target.value),
+                                        extra: e.target.value,
                                       })
                                     }
-                                    className="w-full border rounded px-2 py-1"
-                                  >
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
-                                  </select>
+                                  />
                                 </div>
-                              </div>
-                              <div className="grid grid-cols-2 gap-2">
-                                {Array.from({ length: 20 }).map((_, i) => {
-                                  const key =
-                                    `list${i + 1}` as keyof productType;
-                                  return (
-                                    <div key={key}>
-                                      <Label>{key}</Label>
-                                      <Input
-                                        value={
-                                          (editProduct[key] as string) || ''
-                                        }
-                                        onChange={(e) =>
-                                          setEditProduct({
-                                            ...editProduct,
-                                            [key]: e.target.value,
-                                          })
-                                        }
-                                      />
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
+                                <div className="grid grid-cols-3 gap-2">
+                                  <div>
+                                    <Label>Featured</Label>
+                                    <select
+                                      value={String(editProduct.featured || 0)}
+                                      onChange={(e) =>
+                                        setEditProduct({
+                                          ...editProduct,
+                                          featured: parseInt(e.target.value),
+                                        })
+                                      }
+                                      className="w-full border rounded px-2 py-1"
+                                    >
+                                      <option value="0">No</option>
+                                      <option value="1">Yes</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <Label>Specials</Label>
+                                    <select
+                                      value={String(editProduct.specials || 0)}
+                                      onChange={(e) =>
+                                        setEditProduct({
+                                          ...editProduct,
+                                          specials: parseInt(e.target.value),
+                                        })
+                                      }
+                                      className="w-full border rounded px-2 py-1"
+                                    >
+                                      <option value="0">No</option>
+                                      <option value="1">Yes</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <Label>Active</Label>
+                                    <select
+                                      value={String(editProduct.active || 1)}
+                                      onChange={(e) =>
+                                        setEditProduct({
+                                          ...editProduct,
+                                          active: parseInt(e.target.value),
+                                        })
+                                      }
+                                      className="w-full border rounded px-2 py-1"
+                                    >
+                                      <option value="0">No</option>
+                                      <option value="1">Yes</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <div>
+                                    <Label>Buy</Label>
+                                    <Input
+                                      type="number"
+                                      value={String(editProduct.buy || 0)}
+                                      onChange={(e) =>
+                                        setEditProduct({
+                                          ...editProduct,
+                                          buy: parseInt(e.target.value || '0'),
+                                        })
+                                      }
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label>Get</Label>
+                                    <Input
+                                      type="number"
+                                      value={String(editProduct.get || 0)}
+                                      onChange={(e) =>
+                                        setEditProduct({
+                                          ...editProduct,
+                                          get: parseInt(e.target.value || '0'),
+                                        })
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <div>
+                                    <Label>Out of stock</Label>
+                                    <select
+                                      value={String(
+                                        editProduct.outofstock || 0,
+                                      )}
+                                      onChange={(e) =>
+                                        setEditProduct({
+                                          ...editProduct,
+                                          outofstock: parseInt(e.target.value),
+                                        })
+                                      }
+                                      className="w-full border rounded px-2 py-1"
+                                    >
+                                      <option value="0">No</option>
+                                      <option value="1">Yes</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <Label>Free shipping</Label>
+                                    <select
+                                      value={String(
+                                        editProduct.freeshipping || 0,
+                                      )}
+                                      onChange={(e) =>
+                                        setEditProduct({
+                                          ...editProduct,
+                                          freeshipping: parseInt(
+                                            e.target.value,
+                                          ),
+                                        })
+                                      }
+                                      className="w-full border rounded px-2 py-1"
+                                    >
+                                      <option value="0">No</option>
+                                      <option value="1">Yes</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className="space-y-2">
+                                  {Array.from({ length: 20 }).map((_, i) => {
+                                    const key =
+                                      `list${i + 1}` as keyof productType;
+                                    return (
+                                      <div key={key}>
+                                        <Label>{key}</Label>
+                                        <Input
+                                          value={
+                                            (editProduct[key] as string) || ''
+                                          }
+                                          onChange={(e) =>
+                                            setEditProduct({
+                                              ...editProduct,
+                                              [key]: e.target.value,
+                                            })
+                                          }
+                                        />
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </CardContent>
+                              <CardFooter className="flex justify-end space-x-2">
+                                <DialogClose asChild>
+                                  <Button variant="outline">Cancel</Button>
+                                </DialogClose>
+                                <Button
+                                  onClick={async () => {
+                                    if (editProduct) {
+                                      await updateProduct(
+                                        editProduct.id,
+                                        editProduct as any,
+                                      );
+                                      setEditProduct(null);
+                                      setEditDialogOpen(false);
+                                    }
+                                  }}
+                                  className="min-w-[100px]"
+                                >
+                                  Save Changes
+                                </Button>
+                              </CardFooter>
+                            </Card>
                           )}
-                          <DialogFooter className="pt-4 border-t">
-                            <DialogClose asChild>
-                              <Button variant="outline">Cancel</Button>
-                            </DialogClose>
-                            <Button
-                              onClick={async () => {
-                                if (editProduct) {
-                                  await updateProduct(
-                                    editProduct.id,
-                                    editProduct as any,
-                                  );
-                                  setEditProduct(null);
-                                  setEditDialogOpen(false);
-                                }
-                              }}
-                              className="min-w-[100px]"
-                            >
-                              Save Changes
-                            </Button>
-                          </DialogFooter>
                         </DialogContent>
                       </Dialog>
 
