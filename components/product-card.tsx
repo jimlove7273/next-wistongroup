@@ -1,13 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { ShoppingCart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { useAuth } from '@/components/auth-provider';
-import { useCart } from '@/components/cart-provider';
-import type { Product } from '@/lib/products';
+import Link from "next/link";
+import Image from "next/image";
+import { ShoppingCart, Package } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { useAuth } from "@/components/auth-provider";
+import { useCart } from "@/components/cart-provider";
+import type { Product } from "@/lib/products";
+import { useState } from "react";
 
 interface ProductCardProps {
   product: Product;
@@ -16,6 +17,7 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const { user } = useAuth();
   const { addItem } = useCart();
+  const [imageError, setImageError] = useState(false);
 
   const handleAddToCart = () => {
     const price =
@@ -35,12 +37,19 @@ export function ProductCard({ product }: ProductCardProps) {
     <Card className="group overflow-hidden hover:shadow-lg transition-shadow p-8">
       <Link href={`/product/${product.id}`}>
         <div className="aspect-square relative overflow-hidden bg-muted">
-          <Image
-            src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE + '/' + product.sku}.jpg`}
-            alt={product.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
+          {!imageError ? (
+            <Image
+              src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE + "/" + product.sku}.jpg`}
+              alt={product.name}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gray-100">
+              <Package className="w-16 h-16 text-gray-400" />
+            </div>
+          )}
         </div>
       </Link>
       <CardContent className="p-4">
@@ -55,7 +64,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <div className="flex items-center space-x-2">
               {product.discount && product.discount > 0 ? (
                 <>
-                  <p className="text-sm text-gray-500 line-through">
+                  <p className="text-sm text-gray-400 line-through">
                     ${product.price.toFixed(2)}
                   </p>
                   <p className="text-lg font-bold text-blue-600">

@@ -2,10 +2,14 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { ProductCard } from "@/components/product-card";
 import { products } from "@/lib/products";
 import { toProperCase } from "@/utils/general";
 import { getCategoryPathByValue } from "@/utils/pathtools";
+import { Button } from "@/components/ui/button";
+import { Search, Package, ArrowLeft, Home } from "lucide-react";
+import ProductsLoading from "@/components/products-loading";
 
 function ProductListContent() {
   const searchParams = useSearchParams();
@@ -99,7 +103,7 @@ function ProductListContent() {
       </div>
 
       {loading ? (
-        <div className="text-center py-12">Loading products...</div>
+        <ProductsLoading type="main" />
       ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
@@ -107,10 +111,35 @@ function ProductListContent() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground text-lg">
-            No products found in this category.
+        <div className="flex flex-col items-center justify-center py-16 px-4">
+          <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6">
+            <Package className="w-12 h-12 text-muted-foreground" />
+          </div>
+
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+            No products found
+          </h2>
+
+          <p className="text-gray-600 mb-6 max-w-md text-center">
+            {subcategory || category || brand
+              ? `Sorry, we couldn't find any products matching your criteria in "${getTitle()}".`
+              : "We couldn't find any products at the moment."}
           </p>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button asChild>
+              <Link href="/" className="flex items-center gap-2">
+                <Home className="w-4 h-4" />
+                Back to Home
+              </Link>
+            </Button>
+          </div>
+
+          <div className="mt-6">
+            <p className="text-sm text-gray-500 mb-3">
+              Try picking another category from our menu
+            </p>
+          </div>
         </div>
       )}
     </div>
@@ -120,21 +149,7 @@ function ProductListContent() {
 export default function ProductsPage() {
   return (
     <>
-      <Suspense
-        fallback={
-          <div className="container px-4 py-8 lg:px-8">
-            <div className="animate-pulse">
-              <div className="h-8 bg-muted rounded w-48 mb-4" />
-              <div className="h-4 bg-muted rounded w-32 mb-8" />
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(9)].map((_, i) => (
-                  <div key={i} className="h-80 bg-muted rounded" />
-                ))}
-              </div>
-            </div>
-          </div>
-        }
-      >
+      <Suspense fallback={<ProductsLoading type="skeleton" count={9} />}>
         <ProductListContent />
       </Suspense>
     </>

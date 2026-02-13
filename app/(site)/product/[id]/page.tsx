@@ -1,10 +1,10 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
-import { getProductById } from '@/lib/db-products';
-import ProductDetailContent from '@/components/product-detail-content';
-import RelatedProducts from '@/components/related-products';
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { getProductById } from "@/lib/db-products";
+import ProductDetailContent from "@/components/product-detail-content";
+import RelatedProducts from "@/components/related-products";
+import ProductImage from "@/components/product-image";
 
 export default async function ProductDetailPage({
   params,
@@ -14,7 +14,7 @@ export default async function ProductDetailPage({
   const { id } = await params;
 
   const product = await getProductById(id);
-  console.log('product 1', product);
+  console.log("product 1", product);
 
   if (!product) {
     notFound();
@@ -33,14 +33,12 @@ export default async function ProductDetailPage({
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Product Image */}
-          <div className="relative aspect-square rounded-lg overflow-hidden bg-muted">
-            <Image
-              src={product.image || '/placeholder.svg'}
-              alt={product.name}
-              fill
-              className="object-cover"
-            />
-          </div>
+          <ProductImage
+            src={product.image}
+            alt={product.name}
+            sku={product.sku}
+            className="aspect-square rounded-lg"
+          />
 
           {/* Product Info */}
           <ProductDetailContent product={product} />
