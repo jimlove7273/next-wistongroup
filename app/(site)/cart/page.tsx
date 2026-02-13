@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 import {
   Trash2,
   Plus,
@@ -10,11 +10,11 @@ import {
   CreditCard,
   ShoppingCart,
   Store,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { useCart } from '@/components/cart-provider';
-import { useAuth } from '@/components/auth-provider';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { useCart } from "@/components/cart-provider";
+import { useAuth } from "@/components/auth-provider";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart } = useCart();
@@ -58,7 +58,7 @@ export default function CartPage() {
                   <div className="flex gap-4">
                     <div className="relative w-24 h-24 shrink-0 rounded-md overflow-hidden bg-muted">
                       <Image
-                        src={item.image || '/placeholder.svg'}
+                        src={item.image || "/placeholder.svg"}
                         alt={item.name}
                         fill
                         className="object-cover"

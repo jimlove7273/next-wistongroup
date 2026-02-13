@@ -22,7 +22,7 @@ export async function GET(request: Request) {
     const listid = searchParams.get("listid");
     const limit = searchParams.get("limit");
 
-    let query = supabase.from("products").select("*");
+    let query = supabase.from("products").select("*").eq("active", 1);
 
     if (id) {
       query = query.eq("id", id);
@@ -54,6 +54,7 @@ export async function GET(request: Request) {
         name: row.description || "",
         description: row.extra || "",
         price: row.price || 0,
+        discount: row.discount || 0,
         category: row.list1 || "Uncategorized",
         subcategory: row.list2 || "General",
         brand: row.brand || "Unknown",

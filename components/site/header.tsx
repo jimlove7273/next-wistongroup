@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 import {
   ShoppingCart,
   User,
@@ -12,14 +12,14 @@ import {
   LogIn,
   Search,
   Menu,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useCart } from '@/components/cart-provider';
-import { useAuth } from '@/components/auth-provider';
-import { useState, useRef, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useCart } from "@/components/cart-provider";
+import { useAuth } from "@/components/auth-provider";
+import { useState, useRef, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -28,7 +28,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogClose,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
 export function Header() {
   const pathname = usePathname();
@@ -38,10 +38,10 @@ export function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [loginError, setLoginError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
@@ -58,15 +58,15 @@ export function Header() {
     setIsLoggingIn(true);
     try {
       await login(email, password);
-      setEmail('');
-      setPassword('');
+      setEmail("");
+      setPassword("");
       setIsDropdownOpen(false);
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
       setLoginError(
         error instanceof Error
           ? error.message
-          : 'Login failed. Please try again.',
+          : "Login failed. Please try again.",
       );
     } finally {
       setIsLoggingIn(false);
@@ -101,9 +101,9 @@ export function Header() {
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -163,7 +163,7 @@ export function Header() {
                 <Link
                   href="/about"
                   className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                    pathname === '/about' ? 'text-primary bg-blue-100' : ''
+                    pathname === "/about" ? "text-primary bg-blue-100" : ""
                   }`}
                 >
                   About Us
@@ -171,7 +171,7 @@ export function Header() {
                 <Link
                   href="/contact"
                   className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                    pathname === '/contact' ? 'text-primary bg-blue-100' : ''
+                    pathname === "/contact" ? "text-primary bg-blue-100" : ""
                   }`}
                 >
                   Contact Us
@@ -179,7 +179,7 @@ export function Header() {
                 <Link
                   href="/newsignup"
                   className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md hover:bg-blue-100 ${
-                    pathname === '/newsignup' ? 'text-primary bg-blue-100' : ''
+                    pathname === "/newsignup" ? "text-primary bg-blue-100" : ""
                   }`}
                 >
                   Open An Account
@@ -270,7 +270,7 @@ export function Header() {
                               disabled={isLoggingIn}
                             >
                               <LogIn className="h-4 w-4" />
-                              {isLoggingIn ? 'Logging in...' : 'Login'}
+                              {isLoggingIn ? "Logging in..." : "Login"}
                             </Button>
                           </form>
                         </div>
@@ -300,7 +300,7 @@ export function Header() {
         {/* Mobile menu backdrop */}
         <div
           className={`md:hidden fixed inset-0 bg-black/30 z-30 transition-opacity duration-300 ${
-            isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
           onClick={() => setIsMobileMenuOpen(false)}
         ></div>
@@ -309,7 +309,7 @@ export function Header() {
         <div
           ref={mobileMenuRef}
           className={`md:hidden absolute top-16 left-0 right-0 bg-gray-50 border-b border-gray-200 shadow-lg z-50 transition-all duration-300 ease-in-out ${
-            isMobileMenuOpen ? 'block' : 'hidden'
+            isMobileMenuOpen ? "block" : "hidden"
           }`}
         >
           <div className="px-4 py-2 space-y-2">
@@ -317,9 +317,9 @@ export function Header() {
               <Link
                 href="/about"
                 className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md ${
-                  pathname === '/about'
-                    ? 'text-primary bg-blue-50 border border-blue-100'
-                    : 'hover:bg-gray-100'
+                  pathname === "/about"
+                    ? "text-primary bg-blue-50 border border-blue-100"
+                    : "hover:bg-gray-100"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -328,9 +328,9 @@ export function Header() {
               <Link
                 href="/contact"
                 className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md ${
-                  pathname === '/contact'
-                    ? 'text-primary bg-blue-50 border border-blue-100'
-                    : 'hover:bg-gray-100'
+                  pathname === "/contact"
+                    ? "text-primary bg-blue-50 border border-blue-100"
+                    : "hover:bg-gray-100"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -339,9 +339,9 @@ export function Header() {
               <Link
                 href="/newsignup"
                 className={`text-sm font-medium transition-colors hover:text-primary p-2 rounded-md ${
-                  pathname === '/newsignup'
-                    ? 'text-primary bg-blue-50 border border-blue-100'
-                    : 'hover:bg-gray-100'
+                  pathname === "/newsignup"
+                    ? "text-primary bg-blue-50 border border-blue-100"
+                    : "hover:bg-gray-100"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -434,7 +434,7 @@ export function Header() {
                       disabled={isLoggingIn}
                     >
                       <LogIn className="h-4 w-4" />
-                      {isLoggingIn ? 'Logging in...' : 'Login'}
+                      {isLoggingIn ? "Logging in..." : "Login"}
                     </Button>
                   </form>
                 </div>
@@ -447,14 +447,14 @@ export function Header() {
       {/* Cart Drawer */}
       <div
         className={`fixed inset-0 bg-black/30 z-50 transition-opacity duration-300 ${
-          isCartOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsCartOpen(false)}
       ></div>
       <div
         ref={cartRef}
         className={`fixed top-0 right-0 bg-white w-full max-w-md h-screen flex flex-col z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
-          isCartOpen ? 'translate-x-0' : 'translate-x-full'
+          isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between p-4 border-b">
@@ -484,15 +484,15 @@ export function Header() {
                     className="w-16 h-16 object-cover rounded"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-sm mb-1">{item.name}</h3>
-                    <p className="text-sm text-gray-600 mb-2">
-                      ${item.price.toFixed(2)}
-                    </p>
+                    <h3 className="font-medium text-sm mb-1 truncate">
+                      {item.name}
+                    </h3>
+                    <p className="text-xs text-gray-500 mb-4">{item.sku}</p>
                     <div className="flex items-center gap-2">
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-7 w-7"
+                        className="h-7 w-7 cursor-pointer"
                         onClick={() =>
                           updateQuantity(item.id, item.quantity - 1)
                         }
