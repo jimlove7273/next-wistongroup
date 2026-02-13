@@ -18,10 +18,14 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
 
   const handleAddToCart = () => {
+    const price =
+      product.discount && product.discount > 0
+        ? product.discount
+        : product.price;
     addItem({
       id: product.id,
       name: product.name,
-      price: product.price,
+      price: price,
       image: product.image,
       sku: product.sku,
     });
@@ -48,9 +52,22 @@ export function ProductCard({ product }: ProductCardProps) {
         </Link>
         <div className="flex items-center justify-between">
           {user ? (
-            <p className="text-lg font-bold text-primary">
-              ${product.price.toFixed(2)}
-            </p>
+            <div className="flex items-center space-x-2">
+              {product.discount && product.discount > 0 ? (
+                <>
+                  <p className="text-sm text-gray-500 line-through">
+                    ${product.price.toFixed(2)}
+                  </p>
+                  <p className="text-lg font-bold text-blue-600">
+                    ${product.discount.toFixed(2)}
+                  </p>
+                </>
+              ) : (
+                <p className="text-lg font-bold text-blue-600">
+                  ${product.price.toFixed(2)}
+                </p>
+              )}
+            </div>
           ) : (
             <p className="text-sm text-muted-foreground">Login to see price</p>
           )}

@@ -222,7 +222,7 @@ export default function ProductsPage() {
           <DialogTrigger asChild>
             <Button onClick={() => setCreateOpen(true)}>Create Product</Button>
           </DialogTrigger>
-          <DialogContent className="!max-w-[50vw] max-h-[75vh]">
+          <DialogContent className="max-w-[50vw]! max-h-[75vh]">
             <DialogHeader>
               <DialogTitle>Create Product</DialogTitle>
               <DialogDescription>Add a new product</DialogDescription>
@@ -355,7 +355,7 @@ export default function ProductsPage() {
                             <Pencil className="h-4 w-4 text-green-600" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="!max-w-[50vw] max-h-[75vh]">
+                        <DialogContent className="max-w-[50vw]! max-h-[75vh]">
                           <DialogHeader>
                             <DialogTitle>Edit Product</DialogTitle>
                             <DialogDescription>

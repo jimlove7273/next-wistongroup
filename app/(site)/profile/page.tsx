@@ -23,6 +23,7 @@ export default function ProfilePage() {
     zipcode: '',
     phone: '',
     fax: '',
+    passwd: '',
   });
 
   // Update form data when user changes
@@ -40,6 +41,7 @@ export default function ProfilePage() {
         zipcode: user.zipcode || '',
         phone: user.phone || '',
         fax: user.fax || '',
+        passwd: user.passwd || '',
       });
     }
   }, [user]);
@@ -69,6 +71,7 @@ export default function ProfilePage() {
         zipcode: user.zipcode || '',
         phone: user.phone || '',
         fax: user.fax || '',
+        passwd: user.passwd || '',
       });
     }
     setIsEditing(false);
@@ -81,9 +84,9 @@ export default function ProfilePage() {
           <h1 className="text-2xl font-bold mb-4">
             Please log in to view your profile
           </h1>
-          <Button asChild>
-            <a href="/login">Login</a>
-          </Button>
+          <p className="text-muted-foreground">
+            Use the user icon in the header to log in.
+          </p>
         </div>
       </div>
     );
@@ -305,6 +308,23 @@ export default function ProfilePage() {
                     ) : (
                       <p className="text-sm text-muted-foreground py-2">
                         {user.fax || 'Not provided'}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="passwd">Password</Label>
+                    {isEditing ? (
+                      <Input
+                        id="passwd"
+                        name="passwd"
+                        type="password"
+                        value={formData.passwd}
+                        onChange={handleInputChange}
+                      />
+                    ) : (
+                      <p className="text-sm text-muted-foreground py-2">
+                        ********
                       </p>
                     )}
                   </div>

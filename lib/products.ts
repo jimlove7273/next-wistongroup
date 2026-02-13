@@ -4,10 +4,12 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  discount?: number;
   image: string;
   category: string;
   subcategory: string;
   brand: string;
+  listid?: number;
   featured?: boolean;
   weeklySpecial?: boolean;
   specifications?: {
@@ -339,6 +341,7 @@ export const products: Product[] = [
     name: 'USB 3.0 to SATA Adapter',
     description: 'High-speed USB 3.0 to SATA adapter for external hard drives',
     price: 13.99,
+    discount: 10.99,
     image: '/usb-sata-adapter.jpg',
     category: 'Adapter',
     subcategory: 'USB/HDMI/VGA Adapters',

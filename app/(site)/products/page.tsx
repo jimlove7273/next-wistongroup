@@ -13,46 +13,57 @@ function ProductListContent() {
   const subcategory = searchParams.get("subcategory");
   const brand = searchParams.get("brand");
 
-  const [apiProducts, setApiProducts] = useState<any[] | null>(null);
-  const [loadingApi, setLoadingApi] = useState(false);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  let filteredProducts = products;
+  // debugger;
 
-  // If subcategory is numeric (listid), fetch from API
+  // Fetch products with server-side filtering when subcategory is specified
   useEffect(() => {
-    const fetchByListId = async (listid: string) => {
+    const fetchProducts = async () => {
       try {
-        setLoadingApi(true);
-        const res = await fetch(`/api/products?listid=${listid}`);
+        setLoading(true);
+        // Use server-side filtering if subcategory is specified
+        const apiUrl = subcategory
+          ? `/api/products?listid=${encodeURIComponent(subcategory)}`
+          : "/api/products";
+
+        const res = await fetch(apiUrl);
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
-        setApiProducts(Array.isArray(data) ? data : [data]);
+
+        const mappedData = Array.isArray(data) ? data : [];
+        setAllProducts(mappedData);
       } catch (e) {
-        console.error("Error fetching products by listid", e);
-        setApiProducts([]);
+        console.error("Error fetching products", e);
+        setAllProducts(products);
       } finally {
-        setLoadingApi(false);
+        setLoading(false);
       }
     };
-
-    if (subcategory && /^[0-9]+$/.test(subcategory)) {
-      fetchByListId(subcategory);
-    } else {
-      setApiProducts(null);
-    }
+    fetchProducts();
   }, [subcategory]);
 
-  if (category) {
+  let filteredProducts = allProducts || [];
+
+  // Apply client-side filtering for non-subcategory filters
+  if (category && !subcategory) {
     filteredProducts = filteredProducts.filter((p) => p.category === category);
   }
 
-  // If apiProducts is set (we fetched by listid), use those instead
-  if (apiProducts) {
-    filteredProducts = apiProducts;
-  } else if (subcategory) {
-    filteredProducts = filteredProducts.filter(
-      (p) => p.subcategory === subcategory,
-    );
+  // If subcategory is used, products should already be filtered server-side
+  // But add client-side backup filtering just in case
+  if (subcategory) {
+    const targetListId = parseInt(subcategory);
+    // Only filter client-side if we got unfiltered results
+    if (filteredProducts.some((p) => p.listid !== targetListId)) {
+      filteredProducts = filteredProducts.filter((p) => {
+        if (p.listid === null || p.listid === undefined) {
+          return false;
+        }
+        return p.listid === targetListId;
+      });
+    }
   }
 
   if (brand) {
@@ -63,7 +74,10 @@ function ProductListContent() {
 
   const getTitle = () => {
     if (brand) return `${toProperCase(brand)} Products`;
-    if (subcategory) return subcategory;
+    if (subcategory) {
+      const categoryInfo = getCategoryPathByValue(parseInt(subcategory));
+      return categoryInfo?.label || `Category ${subcategory}`;
+    }
     if (category) return category;
     return "All Products";
   };
@@ -72,18 +86,19 @@ function ProductListContent() {
     <div className="container px-4 py-8 lg:px-8">
       <div className="mb-8">
         <div className="text-xs text-gray-400 mb-4">
-          Home &gt; {getCategoryPathByValue(Number(getTitle()))?.path ?? ""}
+          Home &gt;{" "}
+          {subcategory
+            ? (getCategoryPathByValue(parseInt(subcategory))?.path ?? "")
+            : getTitle()}
         </div>
-        <h1 className="text-3xl font-bold mb-2">
-          {getCategoryPathByValue(Number(getTitle()))?.label ?? ""}
-        </h1>
+        <h1 className="text-3xl font-bold mb-2">{getTitle()}</h1>
         <p className="text-muted-foreground">
           {filteredProducts.length}{" "}
           {filteredProducts.length === 1 ? "product" : "products"} found
         </p>
       </div>
 
-      {loadingApi ? (
+      {loading ? (
         <div className="text-center py-12">Loading products...</div>
       ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

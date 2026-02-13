@@ -161,7 +161,7 @@ export default function SalesPage() {
               Create Sales
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-[32rem] max-h-[75vh]">
+          <DialogContent className="max-w-lg max-h-[75vh]">
             <DialogHeader>
               <DialogTitle>Create Sales</DialogTitle>
               <DialogDescription>Add a new sales record</DialogDescription>

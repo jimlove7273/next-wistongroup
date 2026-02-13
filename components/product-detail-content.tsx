@@ -16,12 +16,17 @@ export default function ProductDetailContent({
 }) {
   const { user } = useAuth();
   const { addItem } = useCart();
+  console.log('product 2', product);
 
   const handleAddToCart = () => {
+    const price =
+      product.discount && product.discount > 0
+        ? product.discount
+        : product.price;
     addItem({
       id: product.id,
       name: product.name,
-      price: product.price,
+      price: price,
       image: product.image,
       sku: product.sku,
     });
@@ -48,9 +53,22 @@ export default function ProductDetailContent({
               Price:
             </span>
             {user ? (
-              <span className="text-3xl font-bold text-primary">
-                ${product.price.toFixed(2)}
-              </span>
+              <div className="flex items-center space-x-2">
+                {product.discount && product.discount > 0 ? (
+                  <>
+                    <span className="text-lg text-gray-500 line-through">
+                      ${product.price.toFixed(2)}
+                    </span>
+                    <span className="text-3xl font-bold text-blue-600">
+                      ${product.discount.toFixed(2)}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-3xl font-bold text-primary">
+                    ${product.price.toFixed(2)}
+                  </span>
+                )}
+              </div>
             ) : (
               <span className="text-sm text-muted-foreground italic">
                 Please Login to See Price

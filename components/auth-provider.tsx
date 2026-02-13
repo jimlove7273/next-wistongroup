@@ -21,6 +21,7 @@ export interface User {
   zipcode?: string;
   phone?: string;
   fax?: string;
+  passwd?: string;
   isAdmin?: boolean; // Added isAdmin property
 }
 
@@ -71,17 +72,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    // Simulate login - in production, this would call your auth API
-    // For demo purposes, we'll treat any email ending with @admin.com as admin
-    const isAdmin = email.endsWith('@admin.com');
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-    const userData = {
-      id: '1',
-      email,
-      name: email.split('@')[0],
-      isAdmin,
-    };
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Login failed');
+    }
 
+    const userData = await response.json();
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
     updateLastActivity();
@@ -94,11 +98,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('lastActivity');
   };
 
-  const updateProfile = (userData: Partial<User>) => {
+  const updateProfile = async (userData: Partial<User>) => {
     if (user) {
-      const updatedUser = { ...user, ...userData };
-      setUser(updatedUser);
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      try {
+        const response = await fetch(`/api/customers?id=${user.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
+        if (response.ok) {
+          const updatedUser = { ...user, ...userData };
+          setUser(updatedUser);
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+        } else {
+          console.error('Failed to update profile');
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+      }
     }
   };
 

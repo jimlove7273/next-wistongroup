@@ -20,6 +20,15 @@ import { useCart } from '@/components/cart-provider';
 import { useAuth } from '@/components/auth-provider';
 import { useState, useRef, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog';
 
 export function Header() {
   const pathname = usePathname();
@@ -33,6 +42,7 @@ export function Header() {
   const [password, setPassword] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loginError, setLoginError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -53,7 +63,11 @@ export function Header() {
       setIsDropdownOpen(false);
     } catch (error) {
       console.error('Login failed:', error);
-      alert('Login failed. Please try again.');
+      setLoginError(
+        error instanceof Error
+          ? error.message
+          : 'Login failed. Please try again.',
+      );
     } finally {
       setIsLoggingIn(false);
     }
@@ -179,9 +193,9 @@ export function Header() {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   {user ? (
-                    <UserCircle className="h-5 w-5 text-primary" />
+                    <UserCircle className="h-5 w-5 text-blue-800" />
                   ) : (
-                    <User className="h-5 w-5" />
+                    <User className="h-5 w-5 text-gray-400" />
                   )}
                   <span className="sr-only">User menu</span>
                 </Button>
@@ -543,6 +557,23 @@ export function Header() {
           </div>
         )}
       </div>
+
+      {/* Login Error Modal */}
+      {loginError && (
+        <Dialog open={!!loginError} onOpenChange={() => setLoginError(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Login Error</DialogTitle>
+              <DialogDescription>{loginError}</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button>OK</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }

@@ -2,20 +2,21 @@ import { createClient } from '@supabase/supabase-js';
 import type { Product as DBProduct } from '@/components/dataTypes';
 import type { Product } from '@/lib/products';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-// Use service role key for full access in server components
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables');
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Missing Supabase environment variables');
+  }
+
+  return createClient(supabaseUrl, supabaseKey);
 }
-
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 /**
  * Map database product to app product format
  */
-function mapDBProductToAppProduct(dbProduct: DBProduct): Product {
+export function mapDBProductToAppProduct(dbProduct: DBProduct): Product {
   // Collect list3-list20 specifications (filter out empty ones)
   const specs: { [key: string]: string } = {};
   for (let i = 3; i <= 20; i++) {
@@ -32,6 +33,7 @@ function mapDBProductToAppProduct(dbProduct: DBProduct): Product {
     name: dbProduct.description || '',
     description: dbProduct.extra || '',
     price: dbProduct.price || 0,
+    discount: dbProduct.discount || 0,
     image:
       process.env.NEXT_PUBLIC_SUPABASE_STORAGE +
         '/' +
@@ -40,6 +42,7 @@ function mapDBProductToAppProduct(dbProduct: DBProduct): Product {
     category: dbProduct.list1 || 'Uncategorized',
     subcategory: dbProduct.list2 || 'General',
     brand: dbProduct.brand || 'Unknown',
+    listid: dbProduct.listid || undefined,
     featured: dbProduct.featured === 1,
     weeklySpecial: dbProduct.specials === 1,
     specifications: {
@@ -57,6 +60,7 @@ export async function getFeaturedProducts(
   limit: number = 3,
 ): Promise<Product[]> {
   try {
+    const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from('products')
       .select('*')
@@ -83,6 +87,7 @@ export async function getSpecialProducts(
   limit: number = 6,
 ): Promise<Product[]> {
   try {
+    const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from('products')
       .select('*')
@@ -107,6 +112,7 @@ export async function getSpecialProducts(
  */
 export async function getAllProducts(): Promise<Product[]> {
   try {
+    const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from('products')
       .select('*')
@@ -138,6 +144,7 @@ export async function getProductById(id: string): Promise<Product | null> {
       return null;
     }
 
+    const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from('products')
       .select('*')
@@ -164,6 +171,7 @@ export async function getFallbackProducts(
   limit: number = 6,
 ): Promise<Product[]> {
   try {
+    const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from('products')
       .select('*')
