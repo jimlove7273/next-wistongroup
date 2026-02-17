@@ -49,9 +49,7 @@ export default function ProductDetailContent({
       <Card className="mb-6">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-muted-foreground">
-              Price:
-            </span>
+            <h2 className="font-semibold text-lg mb-4">Price:</h2>
             {user ? (
               <div className="flex items-center space-x-2">
                 {product.discount && product.discount > 0 ? (
@@ -81,7 +79,7 @@ export default function ProductDetailContent({
               onClick={handleAddToCart}
               size="lg"
               disabled={!user}
-              className="px-16 py-3"
+              className="px-16 py-3 bg-blue-700 hover:bg-blue-600"
             >
               <ShoppingCart className="h-5 w-5 mr-2" />
               Add to Cart
