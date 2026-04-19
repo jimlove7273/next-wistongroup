@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { Header } from '@/components/site/header';
-import { Footer } from '@/components/site/footer';
-import { usePathname } from 'next/navigation';
-import type React from 'react';
-import { useEffect, useState } from 'react';
+import { Header } from "@/components/site/header/header";
+import { Footer } from "@/components/site/footer";
+import { usePathname } from "next/navigation";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 export function SiteLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,7 +15,7 @@ export function SiteLayout({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Check if we're in an admin route
-  const isAdminRoute = pathname?.startsWith('/admin');
+  const isAdminRoute = pathname?.startsWith("/admin");
 
   // Don't render header/footer until we're on the client side
   if (!isClient) {

@@ -42,14 +42,23 @@ export default function ProductDetailContent({
         <p className="text-sm text-muted-foreground mb-8">SKU: {product.sku}</p>
       </div>
 
-      <div>
-        <p className="text-foreground leading-relaxed">{product.description}</p>
-      </div>
-
       <Card className="mb-6">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-lg mb-4">Price:</h2>
+            <div>
+              <h2 className="font-semibold text-lg mb-4">Price:</h2>
+              <div>
+                <p className="text-foreground leading-relaxed">
+                  {product.description}
+                </p>
+                {(product.buy || 0) > 0 && (product.get || 0) > 0 && (
+                  <p className="text-white bg-red-600 text-sm my-4 font-semibold px-3 py-1">
+                    Buy {product.buy || 0} Get {product.get || 0}
+                  </p>
+                )}
+              </div>
+            </div>
+
             {user ? (
               <div className="flex items-center space-x-2">
                 {product.discount && product.discount > 0 ? (

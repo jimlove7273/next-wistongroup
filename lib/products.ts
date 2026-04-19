@@ -12,6 +12,8 @@ export interface Product {
   listid?: number;
   featured?: boolean;
   weeklySpecial?: boolean;
+  buy?: number;
+  get?: number;
   specifications?: {
     [key: string]: string;
   };

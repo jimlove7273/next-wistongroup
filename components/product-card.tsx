@@ -34,12 +34,14 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Card className="group overflow-hidden hover:shadow-lg transition-shadow p-8">
+    <Card className="group overflow-hidden hover:shadow-lg transition-shadow p-4">
       <Link href={`/product/${product.id}`}>
         <div className="aspect-square relative overflow-hidden bg-muted">
           {!imageError ? (
             <Image
-              src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE + "/" + product.sku}.jpg`}
+              src={`${
+                process.env.NEXT_PUBLIC_SUPABASE_STORAGE + "/" + product.sku
+              }.jpg`}
               alt={product.name}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -59,6 +61,11 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.name}
           </h3>
         </Link>
+        {(product.buy || 0) > 0 && (product.get || 0) > 0 && (
+          <p className="text-red-600 text-sm mb-4">
+            Buy {product.buy || 0} Get {product.get || 0}
+          </p>
+        )}
         <div className="flex items-center justify-between">
           {user ? (
             <div className="flex items-center space-x-2">

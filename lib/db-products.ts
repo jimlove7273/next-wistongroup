@@ -45,6 +45,8 @@ export function mapDBProductToAppProduct(dbProduct: DBProduct): Product {
     listid: dbProduct.listid || undefined,
     featured: dbProduct.featured === 1,
     weeklySpecial: dbProduct.specials === 1,
+    buy: dbProduct.buy || 0,
+    get: dbProduct.get || 0,
     specifications: {
       PartNumber: dbProduct.partnumber || 'N/A',
       Brand: dbProduct.brand || 'N/A',

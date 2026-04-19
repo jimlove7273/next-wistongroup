@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { brands } from '@/lib/products';
+import Image from "next/image";
+import Link from "next/link";
+import { brands } from "@/lib/products";
 
 export function BrandShowcase() {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="grid grid-cols-3 sm:flex sm:flex-wrap gap-4">
       {brands.map((brand) => {
         const brandKey = brand.toLowerCase();
         const imgSrc = `/brands/${brandKey}.gif`;

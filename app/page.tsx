@@ -1,11 +1,11 @@
-import { LayoutWithSidebar } from '@/components/layout-with-sidebar';
-import { ProductCard } from '@/components/product-card';
-import { BrandShowcase } from '@/components/brand-showcase';
+import { LayoutWithSidebar } from "@/components/layout-with-sidebar";
+import { ProductCard } from "@/components/product-card";
+import { BrandShowcase } from "@/components/brand-showcase";
 import {
   getFeaturedProducts,
   getSpecialProducts,
   getFallbackProducts,
-} from '@/lib/db-products';
+} from "@/lib/db-products";
 
 export default async function HomePage() {
   let featuredProducts = await getFeaturedProducts(3);
@@ -23,41 +23,30 @@ export default async function HomePage() {
   }
 
   console.log(
-    'HomePage - Featured:',
+    "HomePage - Featured:",
     featuredProducts,
-    'Specials:',
+    "Specials:",
     weeklySpecials,
   );
 
   return (
     <LayoutWithSidebar>
-      <div className="mx-auto container px-4 py-8 lg:px-8">
+      <div className="px-4 py-8 lg:px-8">
         {/* Hero Section */}
-        <section className="mb-12 rounded-lg bg-linear-to-r from-primary/10 via-accent/10 to-primary/10">
-          <div className="h-[300px] w-full overflow-hidden">
-            <img
-              src="/banner_01.jpg"
-              alt="Hero banner"
-              className="h-full w-full object-cover"
-            />
-          </div>
-        </section>
-
-        {/* Brand Showcase */}
-        <section className="mb-12">
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold tracking-wide uppercase text-slate-500">
-              Shop by Brand
-            </h2>
-            <div className="h-1 w-16 bg-blue-600 mt-2 rounded-full"></div>
-          </div>
-          <BrandShowcase />
+        <section className="mb-12 -mx-4 md:mx-0 md:rounded-lg overflow-hidden bg-linear-to-r from-primary/10 via-accent/10 to-primary/10">
+          <img
+            src="/banner_01.jpg"
+            alt="Hero banner"
+            className="w-full h-auto object-cover md:h-[300px]"
+          />
         </section>
 
         {/* Featured Products */}
-        <section className="mb-12">
+        <section className="container mx-auto mb-12">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Featured Products</h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Featured Products
+            </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.map((product) => (
@@ -67,15 +56,33 @@ export default async function HomePage() {
         </section>
 
         {/* Weekly Specials */}
+        <section className="mb-12 bg-slate-50">
+          <div className="container mx-auto py-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                Weekly Specials
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9">
+              {weeklySpecials.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Brand Showcase */}
         <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Weekly Specials</h2>
+          <div className="mb-6">
+            <h2 className="text-center text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Brands we carry
+            </h2>
+            <div className="mb-8 w-full mt-3 text-slate-600 max-w-xl mx-auto text-center">
+              Direct relationships with leading manufacturers ensure authentic
+              product and warranty support.
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9">
-            {weeklySpecials.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <BrandShowcase />
         </section>
       </div>
     </LayoutWithSidebar>
