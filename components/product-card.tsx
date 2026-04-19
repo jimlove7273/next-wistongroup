@@ -56,7 +56,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </Link>
       <CardContent className="p-4">
         <Link href={`/product/${product.id}`}>
-          <p className="text-xs text-muted-foreground mb-1">{product.sku}</p>
+          <p className="text-xs text-muted-foreground">{product.sku}</p>
           <h3 className="font-semibold text-md line-clamp-2 mb-2 group-hover:text-primary transition-colors">
             {product.name}
           </h3>
@@ -89,17 +89,18 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
       </CardContent>
-      <CardFooter className="p-2 flex justify-end">
-        <Button
-          onClick={handleAddToCart}
-          className="px-8! py-5! mr-4"
-          size="sm"
-          disabled={!user}
-        >
-          <ShoppingCart className="h-4 w-4 mr-2" />
-          Add to Cart
-        </Button>
-      </CardFooter>
+      {user && (
+        <CardFooter className="p-2 flex justify-end">
+          <Button
+            onClick={handleAddToCart}
+            className="px-8! py-5! mr-4"
+            size="sm"
+          >
+            <ShoppingCart className="h-4 w-4 mr-2" />
+            Add to Cart
+          </Button>
+        </CardFooter>
+      )}
     </Card>
   );
 }
