@@ -3,7 +3,7 @@ import Link from "next/link";
 export function Topnav() {
   return (
     <div className="hidden md:block bg-gray-800 text-white p-4 text-xs">
-      <div className="flex justify-between items-center max-w-7xl mx-auto">
+      <div className="flex justify-between items-center container mx-auto">
         <span className="font-semibold">
           713 Brea Canyon Road, Walnut, CA 91789 - Mon-Fri 8:30 AM - 5:30 PM PST
         </span>

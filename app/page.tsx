@@ -31,7 +31,7 @@ export default async function HomePage() {
 
   return (
     <LayoutWithSidebar>
-      <div className="px-4 py-8 lg:px-8">
+      <div className="px-4 py-8">
         {/* Hero Section */}
         <section className="mb-12 -mx-4 md:mx-0 md:rounded-lg overflow-hidden bg-linear-to-r from-primary/10 via-accent/10 to-primary/10">
           <img
@@ -42,7 +42,7 @@ export default async function HomePage() {
         </section>
 
         {/* Featured Products */}
-        <section className="container mx-auto mb-12">
+        <section className="container mx-auto mb-12 w-full max-w-7xl">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
               Featured Products
@@ -56,9 +56,12 @@ export default async function HomePage() {
         </section>
 
         {/* Weekly Specials */}
-        <section className="mb-12 bg-slate-50">
-          <div className="container mx-auto py-8">
-            <div className="flex items-center justify-between mb-6">
+        <section className="mb-12 bg-slate-50 border-t border-b border-slate-200">
+          <div className="container mx-auto py-16 w-full max-w-7xl">
+            <div className="flex flex-col items-start mb-6">
+              <div className="text-xs font-bold text-[#C8102E] uppercase tracking-widest mb-2">
+                This Week
+              </div>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
                 Weekly Specials
               </h2>
@@ -72,7 +75,7 @@ export default async function HomePage() {
         </section>
 
         {/* Brand Showcase */}
-        <section className="mb-12">
+        <section className="mb-12 w-full max-w-7xl mx-auto">
           <div className="mb-6">
             <h2 className="text-center text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
               Brands we carry
