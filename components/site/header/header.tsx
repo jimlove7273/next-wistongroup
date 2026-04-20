@@ -119,34 +119,34 @@ export function Header() {
           <div className="h-16 flex items-center px-4 bg-white">
             <div className="flex w-full items-center justify-between gap-4">
               {/* Left: Brand */}
-              <div className="flex justify-start">
+              <div className="flex flex-1 gap-8 justify-start">
                 <Link href="/" className="flex items-center space-x-2">
-                  <div className="text-xl md:text-2xl font-bold text-primary">
+                  <div className="text-base md:text-lg lg:text-2xl font-bold text-primary text-nowrap">
                     Wiston Group
                   </div>
                 </Link>
-              </div>
 
-              {/* Center: Search - Hidden on mobile */}
-              <div className="hidden md:flex flex-none justify-center">
-                <form onSubmit={handleSearch} className="w-full">
-                  <div className="relative w-full">
-                    <Input
-                      type="search"
-                      placeholder="Search products..."
-                      className="w-64 lg:w-full rounded-full bg-slate-50 py-5 pl-10 pr-24 border border-gray-300 focus:border-[#c8102e] focus:!border-[#c8102e] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#c8102e]"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Button
-                      type="submit"
-                      className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#c8102e] hover:bg-[#a10d25] text-white rounded-full px-4 h-8"
-                    >
-                      Search
-                    </Button>
-                  </div>
-                </form>
+                {/* Center: Search - Hidden on mobile */}
+                <div className="hidden md:flex flex-none lg:flex-1 max-w-[700px] justify-center">
+                  <form onSubmit={handleSearch} className="w-full">
+                    <div className="relative w-full">
+                      <Input
+                        type="search"
+                        placeholder="Search products..."
+                        className="w-64 lg:w-full rounded-full bg-slate-50 py-5 pl-10 pr-24 border border-gray-300 focus:border-[#c8102e] focus:!border-[#c8102e] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#c8102e]"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Button
+                        type="submit"
+                        className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#c8102e] hover:bg-[#a10d25] text-white rounded-full px-4 h-8"
+                      >
+                        Search
+                      </Button>
+                    </div>
+                  </form>
+                </div>
               </div>
 
               {/* Mobile menu button */}

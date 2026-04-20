@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { PhoneSVG, EmailSVG, LocationSVG, HoursSVG } from "@/components/svg";
+import {
+  PhoneSVG,
+  EmailSVG,
+  LocationSVG,
+  HoursSVG,
+  FaxSVG,
+} from "@/components/svg";
 
 export function Footer() {
   return (
@@ -22,6 +28,10 @@ export function Footer() {
               <PhoneSVG className="w-4 h-4 text-[#C8102E]" />
               (909) 444-8214
             </div>
+            <div className="flex gap-3 my-1 text-sm text-slate-200 leading-relaxed">
+              <FaxSVG className="w-4 h-4 text-[#C8102E]" />
+              (909) 444-1665
+            </div>
             <div className="flex items-center gap-3 my-1 text-sm text-slate-200 leading-relaxed">
               <EmailSVG className="w-4 h-4 text-[#C8102E]" />
               sales@wistongroup.com
@@ -30,6 +40,8 @@ export function Footer() {
               <HoursSVG className="w-4 h-4 text-[#C8102E]" />
               Mon-Fri 8:30 AM - 5:30 PM PST
             </div>
+            <br />
+            <br />
           </div>
 
           <div className="flex flex-1">&nbsp;</div>

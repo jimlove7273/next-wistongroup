@@ -24,8 +24,6 @@ export default function CartPage() {
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
-  const tax = subtotal * 0.08; // 8% tax
-  const total = subtotal + tax;
 
   if (items.length === 0) {
     return (
@@ -129,21 +127,13 @@ export default function CartPage() {
             {/* Order Summary */}
             <Card className="sticky top-20">
               <CardContent className="p-6">
-                <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+                <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
 
                 <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span className="font-medium">${subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Tax (8%)</span>
-                    <span className="font-medium">${tax.toFixed(2)}</span>
-                  </div>
                   <div className="border-t pt-3 flex justify-between">
-                    <span className="font-bold">Total</span>
+                    <span className="font-semibold">Total</span>
                     <span className="text-2xl font-bold text-primary">
-                      ${total.toFixed(2)}
+                      ${subtotal.toFixed(2)}
                     </span>
                   </div>
                 </div>
